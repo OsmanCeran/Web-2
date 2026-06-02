@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>1 Rep Max Hesapla - FORMLAB</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#98CD00", 
+                        "theme-accent": "#dc2626", /* Red-600: Güç/Performans için */
+                        "background-light": "#f0f5fb",
+                        "background-dark": "#010610",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#0b121a",
+                        "text-light": "#010610",
+                        "text-dark": "#D1F1FF",
+                        "subtle-text-light": "#525866",
+                        "subtle-text-dark": "#a0a8b2",
+                    },
+                    fontFamily: { "display": ["Lexend", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        /* Input Oklarını Gizle */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark transition-colors duration-300">
+    <div class="relative flex min-h-screen w-full flex-col">
+        
+        <header class="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm shadow-sm">
+            <div class="container mx-auto px-4">
+                <div class="flex h-20 items-center justify-between relative">
+                    <div class="flex items-center">
+                        <a class="flex items-center gap-3 text-text-light dark:text-text-dark min-w-[140px]" href="index.html">
+                            <span class="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+                            <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+                        </a>
+                    </div>
+                    <nav class="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="index.html">Anasayfa</a>
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="takviye.html">Takviye Ürünler</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="mutfak.html">Akıllı Mutfak</a>
+                        <a class="text-sm font-medium text-primary dark:hover:text-primary transition-colors" href="hesaplayıcılar.html">Hesaplayıcılar</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="egzersizler.html">Egzersizler</a>
+                        <a class="text-sm font-medium hover:text-primary" href="program.html">Programlar</a>
+                    </nav>
+                    <div class="flex items-center gap-4 min-w-[140px] justify-end">
+                        <button id="theme-toggle" class="flex items-center justify-center rounded-full h-10 w-10 bg-gray-100 dark:bg-gray-800 hover:ring-2 ring-primary transition-all">
+                            <span id="theme-icon" class="material-symbols-outlined text-text-light dark:text-text-dark">dark_mode</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow">
+            <section class="py-10 md:py-16">
+                <div class="container mx-auto px-4">
+                    <div class="text-center mb-12">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold uppercase tracking-wider mb-4">
+                            <span class="material-symbols-outlined text-base">fitness_center</span>
+                            Performans
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-black text-text-light dark:text-text-dark mb-4">1 Rep Max (1RM) Hesaplayıcı</h1>
+                        <p class="text-subtle-text-light dark:text-subtle-text-dark max-w-xl mx-auto">
+                            Kaldırdığınız ağırlık ve tekrar sayısını girerek, tek seferde kaldırabileceğiniz tahmini maksimum ağırlığı (1RM) öğrenin.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl mx-auto items-start">
+                        
+                        <div class="lg:col-span-6 bg-surface-light dark:bg-surface-dark p-6 md:p-8 rounded-3xl shadow-sm border border-gray-200 dark:border-gray-800">
+                            <form id="oneRmForm" class="flex flex-col gap-6" onsubmit="calculateOneRM(event)">
+                                
+                                <div>
+                                    <label class="block text-sm font-bold mb-2 ml-1 text-subtle-text-light dark:text-subtle-text-dark">Kaldırılan Ağırlık (kg)</label>
+                                    <input type="number" id="weight" placeholder="100" inputmode="decimal" required
+                                        class="w-full bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-theme-accent/50 focus:border-theme-accent outline-none transition-all placeholder-gray-400 dark:text-text-dark">
+                                    <p class="text-xs text-subtle-text-light dark:text-subtle-text-dark mt-2 ml-1">
+                                        Squat, Bench Press veya Deadlift ağırlığınızı girin.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-bold mb-2 ml-1 text-subtle-text-light dark:text-subtle-text-dark">Yapılan Tekrar</label>
+                                    <input type="number" id="reps" placeholder="5" inputmode="decimal" min="1" max="12" required
+                                        class="w-full bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-theme-accent/50 focus:border-theme-accent outline-none transition-all placeholder-gray-400 dark:text-text-dark">
+                                    <p class="text-xs text-subtle-text-light dark:text-subtle-text-dark mt-2 ml-1 text-red-500/80">
+                                        * En doğru sonuç için 10 tekrardan az giriniz.
+                                    </p>
+                                </div>
+
+                                <button type="submit" class="w-full bg-theme-accent text-white font-black py-4 rounded-xl hover:shadow-lg hover:shadow-theme-accent/20 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 mt-2">
+                                    <span class="material-symbols-outlined">calculate</span>
+                                    HESAPLA
+                                </button>
+                            </form>
+
+                            <div class="mt-8 p-5 bg-red-50 dark:bg-red-900/10 rounded-2xl border border-red-100 dark:border-red-900/20">
+                                <h4 class="font-bold text-red-700 dark:text-red-400 mb-2 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-lg">info</span>
+                                    1RM Nedir?
+                                </h4>
+                                <p class="text-sm text-red-600/80 dark:text-red-300/80 leading-relaxed">
+                                    1 Rep Max (Tekrar Maksimumu), belirli bir egzersizde tek seferde, doğru formla kaldırabileceğiniz maksimum ağırlıktır. Güç antrenmanları genellikle bu değerin yüzdeleri üzerinden planlanır.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-6 sticky top-24">
+                            <div id="resultCard" class="bg-surface-light dark:bg-surface-dark p-8 rounded-3xl shadow-sm border border-gray-200 dark:border-gray-800 opacity-50 pointer-events-none filter blur-[1px] transition-all duration-500 relative overflow-hidden flex flex-col gap-6">
+                                
+                                <div class="absolute -top-10 -right-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                                <div class="text-center border-b border-gray-100 dark:border-gray-800 pb-6">
+                                    <h3 class="text-sm font-bold mb-2 text-subtle-text-light dark:text-subtle-text-dark uppercase tracking-widest">TAHMİNİ 1RM</h3>
+                                    <div class="flex flex-col items-center justify-center relative z-10">
+                                        <div class="text-6xl font-black text-theme-accent mb-1 tracking-tighter flex items-end gap-2">
+                                            <span id="resultValue">0</span>
+                                            <span class="text-2xl font-bold text-subtle-text-light dark:text-subtle-text-dark mb-3">kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-bold text-text-light dark:text-text-dark mb-4 flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-theme-accent">table_chart</span>
+                                        Antrenman Yüzdeleri
+                                    </h4>
+                                    
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between p-3 rounded-xl bg-red-100/50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30">
+                                            <div class="flex flex-col">
+                                                <span class="font-bold text-red-700 dark:text-red-400">%95</span>
+                                                <span class="text-[10px] uppercase font-bold text-red-600/70 dark:text-red-400/70">Maksimum Güç</span>
+                                            </div>
+                                            <span class="font-black text-lg text-text-light dark:text-text-dark" id="p95">0 kg</span>
+                                        </div>
+
+                                        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                            <div class="flex flex-col">
+                                                <span class="font-bold text-subtle-text-light dark:text-subtle-text-dark">%85</span>
+                                                <span class="text-[10px] uppercase font-bold text-gray-400">Güç</span>
+                                            </div>
+                                            <span class="font-bold text-lg text-text-light dark:text-text-dark" id="p85">0 kg</span>
+                                        </div>
+
+                                        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                            <div class="flex flex-col">
+                                                <span class="font-bold text-subtle-text-light dark:text-subtle-text-dark">%75</span>
+                                                <span class="text-[10px] uppercase font-bold text-gray-400">Hipertrofi</span>
+                                            </div>
+                                            <span class="font-bold text-lg text-text-light dark:text-text-dark" id="p75">0 kg</span>
+                                        </div>
+
+                                        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                            <div class="flex flex-col">
+                                                <span class="font-bold text-subtle-text-light dark:text-subtle-text-dark">%65</span>
+                                                <span class="text-[10px] uppercase font-bold text-gray-400">Patlayıcılık</span>
+                                            </div>
+                                            <span class="font-bold text-lg text-text-light dark:text-text-dark" id="p65">0 kg</span>
+                                        </div>
+
+                                        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                            <div class="flex flex-col">
+                                                <span class="font-bold text-subtle-text-light dark:text-subtle-text-dark">%50</span>
+                                                <span class="text-[10px] uppercase font-bold text-gray-400">Isınma</span>
+                                            </div>
+                                            <span class="font-bold text-lg text-text-light dark:text-text-dark" id="p50">0 kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="border-t border-text-light/10 dark:border-text-dark/10 py-12">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <span class="font-bold text-xl">FORMLAB</span>
+                </div>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır (WEB PROJESİ).</p>
+            </div>
+  </footer>
+    </div>
+
+    <script>
+        function calculateOneRM(e) {
+            e.preventDefault();
+            
+            const weight = parseFloat(document.getElementById('weight').value);
+            const reps = parseFloat(document.getElementById('reps').value);
+            
+            if(!weight || !reps) return;
+
+            // Epley Formülü: w * (1 + r/30)
+            let oneRM = weight * (1 + (reps / 30));
+            
+            // Eğer tekrar sayısı 1 ise, direkt girilen ağırlıktır
+            if(reps === 1) {
+                oneRM = weight;
+            }
+
+            // Yuvarlama (Bir ondalık basamak)
+            oneRM = Math.round(oneRM * 10) / 10;
+
+            // UI Güncelle
+            const resultCard = document.getElementById('resultCard');
+            resultCard.classList.remove('opacity-50', 'pointer-events-none', 'filter', 'blur-[1px]');
+            resultCard.classList.add('opacity-100');
+
+            document.getElementById('resultValue').innerText = oneRM;
+
+            // Yüzdeleri Hesapla ve Yazdır
+            document.getElementById('p95').innerText = Math.round(oneRM * 0.95) + ' kg';
+            document.getElementById('p85').innerText = Math.round(oneRM * 0.85) + ' kg';
+            document.getElementById('p75').innerText = Math.round(oneRM * 0.75) + ' kg';
+            document.getElementById('p65').innerText = Math.round(oneRM * 0.65) + ' kg';
+            document.getElementById('p50').innerText = Math.round(oneRM * 0.50) + ' kg';
+        }
+
+        // Tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') { html.classList.add('dark'); html.classList.remove('light'); themeIcon.innerText = 'light_mode'; }
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('light')) {
+                html.classList.remove('light'); html.classList.add('dark'); themeIcon.innerText = 'light_mode'; localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark'); html.classList.add('light'); themeIcon.innerText = 'dark_mode'; localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,785 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Egzersiz Kütüphanesi - FORMLAB</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#98CD00",
+                        "background-light": "#f0f5fb",
+                        "background-dark": "#010610",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#0b121a",
+                        "text-light": "#010610",
+                        "text-dark": "#D1F1FF",
+                        "subtle-text-light": "#525866",
+                        "subtle-text-dark": "#a0a8b2",
+                    },
+                    fontFamily: { "display": ["Lexend", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        /* DÜZELTME: !important eklendi. Flex yapılı kartların gizlenmesi için şart. */
+        .hide { display: none !important; }
+        
+        .card-media .gif-img { opacity: 0; transition: opacity 0.3s ease; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .exercise-card:hover .gif-img { opacity: 1; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Modal Geçiş Efektleri */
+        #video-modal { transition: visibility 0.3s linear, opacity 0.3s linear; }
+        #video-modal.hidden { visibility: hidden; opacity: 0; }
+        #video-modal:not(.hidden) { visibility: visible; opacity: 1; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark transition-colors duration-300">
+    <div class="relative flex min-h-screen w-full flex-col">
+        
+        <header class="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm shadow-sm">
+            <div class="container mx-auto px-4">
+                <div class="flex h-20 items-center justify-between relative">
+                    <div class="flex items-center">
+                        <a class="flex items-center gap-3 text-text-light dark:text-text-dark min-w-[140px]" href="{% url 'index' %}">
+                            <span class="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+                            <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+                        </a>
+                    </div>
+                    <nav class="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="{% url 'index' %}">Anasayfa</a>
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="{% url 'takviye' %}">Takviye Ürünler</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'mutfak' %}">Akıllı Mutfak</a>
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="{% url 'hesaplayicilar' %}">Hesaplayıcılar</a>
+                        <a class="text-sm font-medium text-primary transition-colors" href="{% url 'egzersizler' %}">Egzersizler</a>
+                        <a class="text-sm font-medium hover:text-primary" href="{% url 'program' %}">Programlar</a>
+                    </nav>
+                    <div class="flex items-center gap-4 min-w-[140px] justify-end">
+                        <button id="theme-toggle" class="flex items-center justify-center rounded-full h-10 w-10 bg-gray-100 dark:bg-gray-800 hover:ring-2 ring-primary transition-all">
+                            <span id="theme-icon" class="material-symbols-outlined text-text-light dark:text-text-dark">dark_mode</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow">
+            <section class="relative py-16 bg-surface-light dark:bg-surface-dark/50">
+                <div class="container mx-auto px-4 text-center">
+                    <div class="flex flex-col gap-4 items-center">
+                        <div class="p-3 bg-primary/10 rounded-full text-primary mb-2">
+                            <span class="material-symbols-outlined text-5xl">fitness_center</span>
+                        </div>
+                        <h1 class="text-4xl md:text-5xl font-black leading-tight tracking-tighter">
+                            Egzersiz <span class="text-primary">Kütüphanesi</span>
+                        </h1>
+                        <p class="text-lg text-subtle-text-light dark:text-subtle-text-dark max-w-2xl mx-auto">
+                            Her kas grubu için özel olarak seçilmiş 30+ hareket ile antrenmanını zenginleştir.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="container mx-auto px-4 py-8">
+                <div class="filter-container flex justify-center gap-3 mb-12 overflow-x-auto pb-4 no-scrollbar">
+                    <button class="filter-btn active px-6 py-2 rounded-full bg-primary text-background-dark text-sm font-bold transition-all border border-transparent" onclick="filterSelection('all', this)">Tümü</button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 text-sm font-bold hover:border-primary transition-all" onclick="filterSelection('gogus', this)">Göğüs</button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 text-sm font-bold hover:border-primary transition-all" onclick="filterSelection('sirt', this)">Sırt</button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 text-sm font-bold hover:border-primary transition-all" onclick="filterSelection('omuz', this)">Omuz</button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 text-sm font-bold hover:border-primary transition-all" onclick="filterSelection('kol', this)">Kol</button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 text-sm font-bold hover:border-primary transition-all" onclick="filterSelection('bacak', this)">Bacak</button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 text-sm font-bold hover:border-primary transition-all" onclick="filterSelection('karin', this)">Karın</button>
+                </div>
+
+                <div class="exercise-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="gogus">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/bench_press.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Bench Press</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Göğüs inşasının temeli olan barbell itiş hareketi.</p>
+                            <button onclick="openVideoModal('egzersiz_video/bench_press.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="gogus">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/inchline_press.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Incline Dumbbell Press</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Üst göğüs liflerini hedefleyen dumbell pres.</p>
+                            <button onclick="openVideoModal('egzersiz_video/incline.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="gogus">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/push_up.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Push Up (Şınav)</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Vücut ağırlığı ile yapılan klasik göğüs egzersizi.</p>
+                            <button onclick="openVideoModal('videolar/push_up.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="gogus">
+                         <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/cable_crossover.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Cable Crossover</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Göğüs ortasını detaylandıran kablolu sıkıştırma hareketi.</p>
+                            <button onclick="openVideoModal('videolar/cable_crossover.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="gogus">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/dumbbell_fly.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Dumbbell Fly</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Göğüs kaslarını esneterek genişleten açış hareketi.</p>
+                             <button onclick="openVideoModal('videolar/dumbbell_fly.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+ 
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="gogus">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/chest_dips.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-hard absolute top-4 right-4 bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Zor</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Chest Dips</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Alt göğüs ve triceps odaklı, vücut ağırlığıyla itiş.</p>
+                            <button onclick="openVideoModal('videolar/chest_dips.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="sirt">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/pull_up.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-hard absolute top-4 right-4 bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Zor</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Pull Up (Barfiks)</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Sırt genişliği (kanat) için en temel vücut ağırlığı hareketi.</p>
+                            <button onclick="openVideoModal('videolar/pull_up.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="sirt">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/deadlift.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-hard absolute top-4 right-4 bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Zor</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Deadlift</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Tüm arka zinciri (Sırt, Bel, Kalça) çalıştıran güç egzersizi.</p>
+                             <button onclick="openVideoModal('videolar/deadlift.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="sirt">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/lat_pulldown.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Lat Pulldown</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Makinede yukarıdan çekiş ile sırt kaslarını geliştirir.</p>
+                            <button onclick="openVideoModal('videolar/lat_pulldown.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="sirt">
+                         <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/barbell_row.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-hard absolute top-4 right-4 bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Zor</span>
+                         </div>
+                         <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Barbell Row</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Sırt kalınlığı ve gücü için öne eğilerek yapılan çekiş.</p>
+                             <button onclick="openVideoModal('videolar/barbell_row.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                         </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="sirt">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/seated_cable_row.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Seated Cable Row</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Orta sırtı hedefleyen oturarak kablo çekiş egzersizi.</p>
+                            <button onclick="openVideoModal('videolar/seated_cable_row.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="sirt">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/face_pull.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Face Pull</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Arka omuz ve postür düzeltmek için yüze çekiş hareketi.</p>
+                             <button onclick="openVideoModal('videolar/face_pull.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="omuz">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/overhead_press.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-hard absolute top-4 right-4 bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Zor</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Overhead Press (OHP)</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Ayakta barbell ile yapılan en temel omuz presi.</p>
+                            <button onclick="openVideoModal('videolar/overhead_press.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="omuz">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/lateral_raise.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Lateral Raise</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Omuzları yana doğru genişleten (yan omuz) izolasyon hareketi.</p>
+                             <button onclick="openVideoModal('videolar/lateral_raise.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="omuz">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/front_raise.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Front Raise</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Ön omuz kaslarını izole eden dambıl kaldırma hareketi.</p>
+                            <button onclick="openVideoModal('videolar/front_raise.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="omuz">
+                         <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/arnold_press.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                         </div>
+                         <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Arnold Press</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Omuzun tüm başlarını çalıştıran rotasyonlu pres.</p>
+                             <button onclick="openVideoModal('videolar/arnold_press.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                         </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="omuz">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/dumbell_shrugs.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Dumbbell Shrugs</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Trapez kaslarını geliştiren omuz silkme hareketi.</p>
+                            <button onclick="openVideoModal('videolar/dumbell_shrugs.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="omuz">
+                         <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/reverse_fly.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                         </div>
+                         <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Reverse Fly</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Arka omuz kaslarını hedefleyen eğilerek açış hareketi.</p>
+                             <button onclick="openVideoModal('videolar/reverse_fly.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                         </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="kol">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/barbell_curl.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Barbell Curl</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Pazı (Biceps) kütlesi için en etkili temel egzersiz.</p>
+                            <button onclick="openVideoModal('videolar/barbell_curl.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="kol">
+                         <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/hammer_curl.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                         </div>
+                         <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Hammer Curl</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Hem biceps hem de ön kol (brachialis) çalıştıran tutuş.</p>
+                             <button onclick="openVideoModal('videolar/hammer_curl.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                         </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="kol">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/preacher_curl.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Preacher Curl</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Biceps'i izole ederek hile yapmayı engelleyen sehpa hareketi.</p>
+                            <button onclick="openVideoModal('videolar/preacher_curl.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="kol">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/triseps_pushdown.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Triceps Pushdown</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Arka kolu şekillendiren kablolu itiş hareketi.</p>
+                             <button onclick="openVideoModal('videolar/triceps_pushdown.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="kol">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/skullcrusher.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Skullcrusher</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Arka kol kütlesi için yatarak yapılan bar kaldırma.</p>
+                            <button onclick="openVideoModal('videolar/skullcrusher.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="kol">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/bench_dips.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Bench Dips</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Sadece bir sehpa ile yapılabilen arka kol egzersizi.</p>
+                             <button onclick="openVideoModal('videolar/bench_dips.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="bacak">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/squat.jpg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-hard absolute top-4 right-4 bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Zor</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Squat</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Bacakların kralı. Tüm alt vücudu çalıştıran temel hareket.</p>
+                            <button onclick="openVideoModal('videolar/squat.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="bacak">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/leg_press.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Leg Press</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Makinede yüksek ağırlıkla bacak itiş egzersizi.</p>
+                             <button onclick="openVideoModal('videolar/leg_press.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="bacak">
+                         <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/lunges.jpg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                         </div>
+                         <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Lunges (Adımlama)</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Denge ve tek bacak kuvveti için öne adımlama.</p>
+                             <button onclick="openVideoModal('videolar/lunges.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                         </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="bacak">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/leg_extancion.jpeg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Leg Extension</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Ön bacak (Quadriceps) kaslarını izole eden makine hareketi.</p>
+                             <button onclick="openVideoModal('videolar/leg_extension.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="bacak">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/leg_curl.jpeg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Leg Curl</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Arka bacak (Hamstring) kaslarını çalıştıran makine hareketi.</p>
+                             <button onclick="openVideoModal('videolar/leg_curl.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="bacak">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/calf_rise.jpeg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Calf Raise</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Baldır kaslarını geliştiren parmak ucuna yükselme hareketi.</p>
+                             <button onclick="openVideoModal('videolar/calf_raise.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="karin">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                            <img loading="lazy" src="{% static 'egzersiz/plank.jpeg' %}" class="static-img w-full h-full object-cover">
+                            <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                            <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Plank</h3>
+                            <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Merkez bölgeyi (Core) güçlendiren statik duruş.</p>
+                            <button onclick="openVideoModal('videolar/plank.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="karin">
+                         <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/crunch.jpeg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-easy absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Kolay</span>
+                         </div>
+                         <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Crunch (Mekik)</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Üst karın kaslarını hedefleyen klasik sıkıştırma.</p>
+                             <button onclick="openVideoModal('videolar/crunch.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                         </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="karin">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/leg_raise.jpeg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Leg Raise</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Alt karın kaslarını çalıştıran bacak kaldırma hareketi.</p>
+                             <button onclick="openVideoModal('videolar/leg_raise.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="karin">
+                         <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/russian_twist.jpeg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                         </div>
+                         <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Russian Twist</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Yan karın (Oblik) kasları için dönerek yapılan hareket.</p>
+                             <button onclick="openVideoModal('videolar/russian_twist.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                         </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="karin">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/mountain_climber.jpeg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Mountain Climber</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Hem kardiyo hem karın egzersizi olan tırmanma hareketi.</p>
+                             <button onclick="openVideoModal('videolar/mountain_climber.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:border-primary/50 transition-all hover:-translate-y-2 cursor-pointer" data-category="karin">
+                        <div class="card-media relative h-56 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                             <img loading="lazy" src="{% static 'egzersiz/bicycle_crunch.jpeg' %}" class="static-img w-full h-full object-cover">
+                             <img loading="lazy" src="https://via.placeholder.com/400x300/98CD00/000?text=GIF" class="gif-img">
+                             <span class="difficulty-badge badge-medium absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Orta</span>
+                        </div>
+                        <div class="card-info p-6 flex flex-col flex-grow">
+                             <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Bicycle Crunch</h3>
+                             <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark mt-2 flex-grow">Tüm karın kaslarını aktif eden bisiklet hareketi.</p>
+                             <button onclick="openVideoModal('videolar/bicycle_crunch.mp4')" class="card-link mt-4 flex items-center text-primary font-bold text-sm hover:underline focus:outline-none">
+                                 Videoyu İzle <span class="material-symbols-outlined ml-2 text-xl">play_circle</span>
+                             </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <footer class="border-t border-text-light/10 dark:border-text-dark/10 py-12 bg-surface-light dark:bg-surface-dark mt-auto">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <span class="font-bold text-xl">FORMLAB</span>
+                </div>
+                <p class="text-subtle-text-light dark:text-subtle-text-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+                <p class="text-subtle-text-light dark:text-subtle-text-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır (WEB PROJESİ).</p>
+            </div>
+        </footer>
+    </div>
+
+    <div id="video-modal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-black/90 backdrop-blur-sm transition-opacity opacity-0" id="modal-backdrop" onclick="closeVideoModal()"></div>
+
+        <div class="relative z-10 w-full max-w-4xl p-4 mx-auto flex items-center justify-center min-h-screen pointer-events-none">
+             <div class="relative w-full bg-black rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 transform scale-95 opacity-0 transition-all pointer-events-auto" id="modal-panel">
+                <button type="button" onclick="closeVideoModal()" class="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/50 text-white hover:bg-primary hover:text-black transition-colors focus:outline-none">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+                <div class="aspect-video w-full bg-black flex justify-center items-center">
+                    <video id="local-video-player" class="w-full h-full object-contain" controls>
+                        <source src="" type="video/mp4">
+                        Tarayıcınız video etiketini desteklemiyor.
+                    </video>
+                </div>
+             </div>
+        </div>
+    </div>
+
+    <script>
+        // TEMA YÖNETİMİ
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+            html.classList.remove('light');
+            themeIcon.innerText = 'light_mode';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('light')) {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                themeIcon.innerText = 'light_mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                themeIcon.innerText = 'dark_mode';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // FİLTRELEME FONKSİYONU (DÜZELTİLDİ)
+        function filterSelection(category, btn) {
+            // 1. Kartları Filtrele
+            const cards = document.getElementsByClassName("exercise-card");
+            for (let i = 0; i < cards.length; i++) {
+                const cardCategory = cards[i].getAttribute("data-category");
+                if (category === "all" || cardCategory === category) {
+                    cards[i].classList.remove("hide");
+                } else {
+                    cards[i].classList.add("hide");
+                }
+            }
+
+            // 2. Butonları Sıfırla (Pasif Hale Getir)
+            const btns = document.getElementsByClassName("filter-btn");
+            for (let i = 0; i < btns.length; i++) {
+                const b = btns[i];
+                // Aktif sınıfları kaldır
+                b.classList.remove("active", "bg-primary", "text-background-dark", "border-transparent");
+                // Pasif sınıfları geri ekle
+                b.classList.add("bg-surface-light", "dark:bg-surface-dark", "border-gray-200", "dark:border-gray-800");
+            }
+
+            // 3. Tıklanan Butonu Aktif Yap
+            // Pasif sınıfları kaldır
+            btn.classList.remove("bg-surface-light", "dark:bg-surface-dark", "border-gray-200", "dark:border-gray-800");
+            // Aktif sınıfları ekle
+            btn.classList.add("active", "bg-primary", "text-background-dark", "border-transparent");
+        }
+
+        // VİDEO MODAL FONKSİYONLARI
+        const modal = document.getElementById('video-modal');
+        const backdrop = document.getElementById('modal-backdrop');
+        const panel = document.getElementById('modal-panel');
+        const videoPlayer = document.getElementById('local-video-player');
+
+        function openVideoModal(videoPath) {
+            if (!videoPath) {
+                alert("Video dosyası bulunamadı.");
+                return;
+            }
+            videoPlayer.src = videoPath;
+            modal.classList.remove('hidden');
+            
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                panel.classList.remove('scale-95', 'opacity-0');
+                panel.classList.add('scale-100', 'opacity-100');
+                videoPlayer.play();
+            }, 10);
+        }
+
+        function closeVideoModal() {
+            backdrop.classList.add('opacity-0');
+            panel.classList.remove('scale-100', 'opacity-100');
+            panel.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                videoPlayer.pause();
+                videoPlayer.src = "";
+            }, 300);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape" && !modal.classList.contains('hidden')) {
+                closeVideoModal();
+            }
+        });
+    </script>
+</body>
+</html>
+

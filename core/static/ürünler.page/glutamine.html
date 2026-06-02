@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>L-Glutamine Detay - FORMLAB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#98CD00",
+              "background-light": "#f0f5fb",
+              "background-dark": "#010610",
+              "surface-light": "#ffffff",
+              "surface-dark": "#0b121a",
+              "text-light": "#010610",
+              "text-dark": "#D1F1FF",
+              "subtle-text-light": "#525866",
+              "subtle-text-dark": "#a0a8b2",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Lexend', sans-serif; }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #555; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col">
+
+<header class="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm shadow-sm border-b border-gray-200 dark:border-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="flex h-20 items-center justify-between relative">
+            <div class="flex items-center">
+                <a class="flex items-center gap-3 text-text-light dark:text-text-dark" href="../index.html">
+                    <span class="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+                    <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+                </a>
+            </div>
+            <nav class="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="../index.html">Anasayfa</a>
+                <a class="text-sm font-medium text-primary" href="../takviye.html">Takviye Ürünler</a>
+                <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="../hesaplayıcılar.html">Hesaplayıcılar</a>
+                <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="../program.html">Programlar</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="flex items-center justify-center rounded-full h-10 w-10 bg-gray-100 dark:bg-gray-800 hover:ring-2 ring-primary transition-all">
+                    <span id="theme-icon" class="material-symbols-outlined text-text-light dark:text-text-dark">dark_mode</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow container mx-auto px-4 py-8">
+    
+    <nav class="flex mb-8 text-sm text-subtle-text-light dark:text-subtle-text-dark">
+        <a href="../takviye.html" class="hover:text-primary transition-colors">Takviye Ürünler</a>
+        <span class="mx-2">/</span>
+        <span class="text-text-light dark:text-text-dark font-medium">L-Glutamine</span>
+    </nav>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16 items-start">
+        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl p-8 flex items-center justify-center shadow-lg border border-gray-100 dark:border-gray-800 relative group aspect-square">
+            <img src="../ürünler/L_glutamine.jpg" 
+                 alt="L-Glutamine Powder" 
+                 class="w-full h-full object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-500 filter grayscale">
+            <div class="absolute top-4 right-4 bg-primary text-background-dark text-xs font-bold px-3 py-1 rounded-full">
+                %100 Fermente
+            </div>
+        </div>
+
+        <div class="flex flex-col h-full justify-center">
+            <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight">L-Glutamine <span class="text-2xl font-normal text-subtle-text-light dark:text-subtle-text-dark block mt-2">Mikronize & Saf</span></h1>
+            <p class="text-xl text-subtle-text-light dark:text-subtle-text-dark mb-8 font-light">
+                Kas ağrılarını unutun, bağışıklığınızı çelik gibi yapın.
+            </p>
+            <p class="text-text-light dark:text-text-dark mb-8 leading-relaxed text-lg">
+                Vücuttaki serbest amino asit havuzunun %60'ını oluşturan Glutamin, yoğun antrenmanlarda hızla tükenir. FORMLAB L-Glutamine, kas yıkımını durdurmak, toparlanmayı hızlandırmak ve bağışıklık sistemini desteklemek için %100 saf formdadır.
+            </p>
+
+            <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
+                <h4 class="font-bold mb-4 text-sm text-subtle-text-light dark:text-subtle-text-dark uppercase tracking-widest">Ürün Avantajları</h4>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">check_circle</span><span class="font-medium">5000mg Saf Glutamin</span></div>
+                    <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">check_circle</span><span class="font-medium">Bağışıklık Sistemi Desteği</span></div>
+                    <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">check_circle</span><span class="font-medium">Hızlı Kas Onarımı</span></div>
+                    <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">check_circle</span><span class="font-medium">Aromasız (Kolay Karışım)</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <div class="lg:col-span-2">
+            <h3 class="text-2xl font-bold mb-6 flex items-center gap-2"><span class="material-symbols-outlined text-primary">nutrition</span>İçerik Analizi</h3>
+            <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-gray-100 dark:bg-gray-800"><tr><th class="px-6 py-4 font-bold text-text-light dark:text-text-dark">Etken Madde</th><th class="px-6 py-4 font-bold text-text-light dark:text-text-dark">Miktar (1 Ölçek)</th></tr></thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-surface-light dark:bg-surface-dark">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium">L-Glutamin</td><td class="px-6 py-4 text-primary font-bold">5000 mg</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-800">
+                <h4 class="font-bold text-lg mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">schedule</span>Kullanım</h4>
+                <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark leading-relaxed">Antrenman sonrasında veya gece yatmadan önce 1 ölçek (5g) tozu su, meyve suyu veya protein shake'inize karıştırarak tüketebilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="border-t border-text-light/10 dark:border-text-dark/10 py-12">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <span class="font-bold text-xl">FORMLAB</span>
+                </div>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır (WEB PROJESİ).</p>
+            </div>
+  </footer>
+
+<script>
+    const themeToggle = document.getElementById('theme-toggle'); const themeIcon = document.getElementById('theme-icon'); const html = document.documentElement;
+    const currentTheme = localStorage.getItem('theme') || 'light'; if (currentTheme === 'dark') { html.classList.add('dark'); html.classList.remove('light'); themeIcon.innerText = 'light_mode'; }
+    themeToggle.addEventListener('click', () => { if (html.classList.contains('light')) { html.classList.remove('light'); html.classList.add('dark'); themeIcon.innerText = 'light_mode'; localStorage.setItem('theme', 'dark'); } else { html.classList.remove('dark'); html.classList.add('light'); themeIcon.innerText = 'dark_mode'; localStorage.setItem('theme', 'light'); } });
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Su İhtiyacı Hesapla - FORMLAB</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#98CD00", 
+                        "theme-accent": "#06b6d4", /* Cyan-500: Su teması */
+                        "background-light": "#f0f5fb",
+                        "background-dark": "#010610",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#0b121a",
+                        "text-light": "#010610",
+                        "text-dark": "#D1F1FF",
+                        "subtle-text-light": "#525866",
+                        "subtle-text-dark": "#a0a8b2",
+                    },
+                    fontFamily: { "display": ["Lexend", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        /* Input Oklarını Gizle */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        
+
+        /* Su Dalgası Animasyonu */
+        @keyframes wave {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            50% { transform: translateX(-50%) rotate(180deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+        .water-wave {
+            position: absolute;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background-color: rgba(6, 182, 212, 0.4);
+            border-radius: 40%;
+            animation: wave 10s linear infinite;
+        }
+        .water-wave::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(6, 182, 212, 0.6);
+            border-radius: 40%;
+            transform: translate(-50%, -10px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark transition-colors duration-300">
+    <div class="relative flex min-h-screen w-full flex-col">
+        
+       <header class="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm shadow-sm">
+            <div class="container mx-auto px-4">
+                <div class="flex h-20 items-center justify-between relative">
+                    <div class="flex items-center">
+                        <a class="flex items-center gap-3 text-text-light dark:text-text-dark min-w-[140px]" href="index.html">
+                            <span class="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+                            <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+                        </a>
+                    </div>
+                    <nav class="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="index.html">Anasayfa</a>
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="takviye.html">Takviye Ürünler</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="mutfak.html">Akıllı Mutfak</a>
+                        <a class="text-sm font-medium text-primary dark:hover:text-primary transition-colors" href="hesaplayıcılar.html">Hesaplayıcılar</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="egzersizler.html">Egzersizler</a>
+                        <a class="text-sm font-medium hover:text-primary" href="program.html">Programlar</a>
+                    </nav>
+                    <div class="flex items-center gap-4 min-w-[140px] justify-end">
+                        <button id="theme-toggle" class="flex items-center justify-center rounded-full h-10 w-10 bg-gray-100 dark:bg-gray-800 hover:ring-2 ring-primary transition-all">
+                            <span id="theme-icon" class="material-symbols-outlined text-text-light dark:text-text-dark">dark_mode</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow">
+            <section class="py-10 md:py-16">
+                <div class="container mx-auto px-4">
+                    <div class="text-center mb-12">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider mb-4">
+                            <span class="material-symbols-outlined text-base">water_drop</span>
+                            Hidrasyon
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-black text-text-light dark:text-text-dark mb-4">Günlük Su İhtiyacı</h1>
+                        <p class="text-subtle-text-light dark:text-subtle-text-dark max-w-xl mx-auto">
+                            Kilonuza ve aktivite seviyenize göre, vücudunuzun sıvı dengesini korumak için ne kadar su tüketmeniz gerektiğini hesaplayın.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl mx-auto items-start">
+                        
+                        <div class="lg:col-span-6 bg-surface-light dark:bg-surface-dark p-6 md:p-8 rounded-3xl shadow-sm border border-gray-200 dark:border-gray-800">
+                            <form id="waterForm" class="flex flex-col gap-6" onsubmit="calculateWater(event)">
+                                
+                                <div>
+                                    <label class="block text-sm font-bold mb-2 ml-1 text-subtle-text-light dark:text-subtle-text-dark">Kilonuz (kg)</label>
+                                    <div class="relative">
+                                        <input type="number" id="weight" placeholder="75" inputmode="decimal" required
+                                            class="w-full bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-theme-accent/50 focus:border-theme-accent outline-none transition-all placeholder-gray-400 dark:text-text-dark">
+                                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-bold">kg</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-bold mb-2 ml-1 text-subtle-text-light dark:text-subtle-text-dark">Günlük Aktivite / Spor Süresi</label>
+                                    <div class="relative">
+                                        <select id="activity" class="w-full bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 pr-10 appearance-none focus:ring-2 focus:ring-theme-accent/50 focus:border-theme-accent outline-none transition-all cursor-pointer">
+                                            <option value="0">Egzersiz Yapmıyorum</option>
+                                            <option value="30">30 Dakika</option>
+                                            <option value="60">60 Dakika (1 Saat)</option>
+                                            <option value="90">90 Dakika (1.5 Saat)</option>
+                                            <option value="120">120 Dakika (2 Saat+)</option>
+                                        </select>
+                                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">expand_more</span>
+                                    </div>
+                                    <p class="text-xs text-subtle-text-light dark:text-subtle-text-dark mt-2 ml-1">
+                                        *Terleme ile kaybedilen sıvıyı yerine koymak için önemlidir.
+                                    </p>
+                                </div>
+
+                                <button type="submit" class="w-full bg-theme-accent text-white font-black py-4 rounded-xl hover:shadow-lg hover:shadow-theme-accent/20 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 mt-2">
+                                    <span class="material-symbols-outlined">calculate</span>
+                                    HESAPLA
+                                </button>
+                            </form>
+
+                            <div class="mt-8 p-5 bg-cyan-50 dark:bg-cyan-900/10 rounded-2xl border border-cyan-100 dark:border-cyan-900/20">
+                                <h4 class="font-bold text-cyan-700 dark:text-cyan-400 mb-2 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-lg">tips_and_updates</span>
+                                    İpucu
+                                </h4>
+                                <p class="text-sm text-cyan-600/80 dark:text-cyan-300/80 leading-relaxed">
+                                    Susama hissi, dehidrasyonun başladığını gösterir. Susamayı beklemeden, gün içine yayarak su içmek metabolizmanızı %30'a kadar hızlandırabilir.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-6 sticky top-24">
+                            <div id="resultCard" class="bg-surface-light dark:bg-surface-dark p-8 rounded-3xl shadow-sm border border-gray-200 dark:border-gray-800 opacity-50 pointer-events-none filter blur-[1px] transition-all duration-500 relative overflow-hidden flex flex-col gap-6 min-h-[400px]">
+                                
+                                <div class="absolute -top-10 -right-10 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                                <div class="relative z-10 text-center">
+                                    <h3 class="text-sm font-bold mb-2 text-subtle-text-light dark:text-subtle-text-dark uppercase tracking-widest">İÇMENİZ GEREKEN</h3>
+                                    <div class="flex flex-col items-center justify-center">
+                                        <div class="text-6xl font-black text-theme-accent mb-1 tracking-tighter flex items-end gap-2">
+                                            <span id="litersValue">0</span>
+                                            <span class="text-2xl font-bold text-subtle-text-light dark:text-subtle-text-dark mb-3">Litre</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex-grow flex items-center justify-center py-6 relative">
+                                    <div class="w-32 h-44 border-4 border-gray-300 dark:border-gray-600 rounded-b-3xl rounded-t-lg relative overflow-hidden bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm z-10">
+                                        <div class="water-wave" id="waterLevel" style="top: 100%;"></div>
+                                        
+                                        <div class="absolute inset-0 flex flex-col items-center justify-center text-cyan-900 font-bold z-20 pointer-events-none">
+                                            <span class="text-3xl" id="glassCount">0</span>
+                                            <span class="text-xs uppercase opacity-70">Bardak</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="absolute w-2 h-2 bg-cyan-300 rounded-full bottom-10 left-1/2 animate-bounce opacity-50" style="animation-duration: 2s;"></div>
+                                    <div class="absolute w-1.5 h-1.5 bg-cyan-300 rounded-full bottom-16 left-[45%] animate-bounce opacity-40" style="animation-duration: 3s;"></div>
+                                </div>
+
+                                <div class="text-center space-y-1 relative z-10">
+                                    <p class="text-sm font-bold text-text-light dark:text-text-dark">
+                                        <span id="mlValue">0</span> ml
+                                    </p>
+                                    <p class="text-[10px] text-gray-400 uppercase">
+                                        * 1 Bardak = 200 ml olarak hesaplanmıştır.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="border-t border-text-light/10 dark:border-text-dark/10 py-12">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <span class="font-bold text-xl">FORMLAB</span>
+                </div>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır (WEB PROJESİ).</p>
+            </div>
+  </footer>
+    </div>
+
+    <script>
+        function calculateWater(e) {
+            e.preventDefault();
+            
+            const weight = parseFloat(document.getElementById('weight').value);
+            const activityMinutes = parseFloat(document.getElementById('activity').value);
+            
+            if(!weight) return;
+
+            // Bazal İhtiyaç: 35ml per kg
+            let waterMl = weight * 35;
+
+            // Aktivite Ekstra İhtiyaç: 30dk için ~250-300ml ekle
+            // Basitçe: her dakika için 8-10ml ekleyelim
+            if (activityMinutes > 0) {
+                waterMl += (activityMinutes / 30) * 350; // Her 30 dk spor için 350ml
+            }
+
+            // Litreye Çevir
+            const waterLiters = (waterMl / 1000).toFixed(2);
+            
+            // Bardak Sayısı (200ml)
+            const glasses = Math.round(waterMl / 200);
+
+            // UI Güncelle
+            const resultCard = document.getElementById('resultCard');
+            resultCard.classList.remove('opacity-50', 'pointer-events-none', 'filter', 'blur-[1px]');
+            resultCard.classList.add('opacity-100');
+
+            document.getElementById('litersValue').innerText = waterLiters;
+            document.getElementById('mlValue').innerText = Math.round(waterMl);
+            document.getElementById('glassCount').innerText = glasses;
+
+            // Su Seviyesi Animasyonu (Daha dolu görünsün diye %20'den başlatıp %90'a kadar)
+            // Bardak doluluğu efekti için "top" değerini değiştiriyoruz.
+            // top: 100% (boş) -> top: 10% (dolu)
+            // Bu basit bir görselleştirmedir.
+            
+            // Animasyonun her zaman biraz hareketli olması için 
+            // rastgele bir doluluk yerine %60-80 arası bir görsel doluluk verelim ki güzel dursun
+            // Ya da gerçekçi olsun derseniz sabit bırakabiliriz ama dolu bardak daha motive edici.
+            // Hadi biraz dolu gösterelim:
+            const fillPercent = 30; // Top değeri %30 (yani %70 dolu)
+            document.getElementById('waterLevel').style.top = fillPercent + '%';
+        }
+
+        // Tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') { html.classList.add('dark'); html.classList.remove('light'); themeIcon.innerText = 'light_mode'; }
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('light')) {
+                html.classList.remove('light'); html.classList.add('dark'); themeIcon.innerText = 'light_mode'; localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark'); html.classList.add('light'); themeIcon.innerText = 'dark_mode'; localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>

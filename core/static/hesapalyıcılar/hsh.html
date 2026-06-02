@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Hedef Süre Hesapla - FORMLAB</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#98CD00", 
+                        "theme-accent": "#e11d48", /* Rose-600: Planlama/Zaman için */
+                        "background-light": "#f0f5fb",
+                        "background-dark": "#010610",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#0b121a",
+                        "text-light": "#010610",
+                        "text-dark": "#D1F1FF",
+                        "subtle-text-light": "#525866",
+                        "subtle-text-dark": "#a0a8b2",
+                    },
+                    fontFamily: { "display": ["Lexend", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        /* Input Oklarını Gizle */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark transition-colors duration-300">
+    <div class="relative flex min-h-screen w-full flex-col">
+        
+        <header class="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm shadow-sm">
+            <div class="container mx-auto px-4">
+                <div class="flex h-20 items-center justify-between relative">
+                    <div class="flex items-center">
+                        <a class="flex items-center gap-3 text-text-light dark:text-text-dark min-w-[140px]" href="index.html">
+                            <span class="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+                            <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+                        </a>
+                    </div>
+                    <nav class="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="index.html">Anasayfa</a>
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="takviye.html">Takviye Ürünler</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="mutfak.html">Akıllı Mutfak</a>
+                        <a class="text-sm font-medium text-primary dark:hover:text-primary transition-colors" href="hesaplayıcılar.html">Hesaplayıcılar</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="egzersizler.html">Egzersizler</a>
+                        <a class="text-sm font-medium hover:text-primary" href="program.html">Programlar</a>
+                    </nav>
+                    <div class="flex items-center gap-4 min-w-[140px] justify-end">
+                        <button id="theme-toggle" class="flex items-center justify-center rounded-full h-10 w-10 bg-gray-100 dark:bg-gray-800 hover:ring-2 ring-primary transition-all">
+                            <span id="theme-icon" class="material-symbols-outlined text-text-light dark:text-text-dark">dark_mode</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow">
+            <section class="py-10 md:py-16">
+                <div class="container mx-auto px-4">
+                    <div class="text-center mb-12">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 text-xs font-bold uppercase tracking-wider mb-4">
+                            <span class="material-symbols-outlined text-base">calendar_month</span>
+                            Zaman Planlaması
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-black text-text-light dark:text-text-dark mb-4">Hedef Süre Hesaplayıcı</h1>
+                        <p class="text-subtle-text-light dark:text-subtle-text-dark max-w-xl mx-auto">
+                            İdeal kilonuza ne zaman ulaşacağınızı ve bu süreçte günlük kalori dengenizi nasıl ayarlamanız gerektiğini planlayın.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl mx-auto items-start">
+                        
+                        <div class="lg:col-span-6 bg-surface-light dark:bg-surface-dark p-6 md:p-8 rounded-3xl shadow-sm border border-gray-200 dark:border-gray-800">
+                            <form id="timeForm" class="flex flex-col gap-6" onsubmit="calculateTime(event)">
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-bold mb-2 ml-1 text-subtle-text-light dark:text-subtle-text-dark">Mevcut Kilo (kg)</label>
+                                        <input type="number" id="currentWeight" placeholder="85" inputmode="decimal" required
+                                            class="w-full bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-theme-accent/50 focus:border-theme-accent outline-none transition-all placeholder-gray-400 dark:text-text-dark">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold mb-2 ml-1 text-subtle-text-light dark:text-subtle-text-dark">Hedef Kilo (kg)</label>
+                                        <input type="number" id="goalWeight" placeholder="70" inputmode="decimal" required
+                                            class="w-full bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-theme-accent/50 focus:border-theme-accent outline-none transition-all placeholder-gray-400 dark:text-text-dark">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-bold mb-2 ml-1 text-subtle-text-light dark:text-subtle-text-dark">Haftalık Değişim Hızı</label>
+                                    <div class="relative">
+                                        <select id="pace" class="w-full bg-background-light dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 pr-10 appearance-none focus:ring-2 focus:ring-theme-accent/50 focus:border-theme-accent outline-none transition-all cursor-pointer">
+                                            <option value="0.25">0.25 kg / hafta (Hafif)</option>
+                                            <option value="0.5" selected>0.50 kg / hafta (Önerilen)</option>
+                                            <option value="0.75">0.75 kg / hafta (Orta)</option>
+                                            <option value="1.0">1.00 kg / hafta (Yoğun)</option>
+                                            <option value="1.25">1.25 kg / hafta (Agresif - Uzman Önerisi)</option>
+                                        </select>
+                                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">expand_more</span>
+                                    </div>
+                                    <p class="text-xs text-subtle-text-light dark:text-subtle-text-dark mt-2 ml-1">
+                                        * Haftada 0.5 - 1 kg arası değişim en sağlıklı aralıktır.
+                                    </p>
+                                </div>
+
+                                <button type="submit" class="w-full bg-theme-accent text-white font-black py-4 rounded-xl hover:shadow-lg hover:shadow-theme-accent/20 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 mt-2">
+                                    <span class="material-symbols-outlined">schedule</span>
+                                    HESAPLA
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="lg:col-span-6 sticky top-24">
+                            <div id="resultCard" class="bg-surface-light dark:bg-surface-dark p-8 rounded-3xl shadow-sm border border-gray-200 dark:border-gray-800 opacity-50 pointer-events-none filter blur-[1px] transition-all duration-500 relative overflow-hidden flex flex-col gap-6">
+                                
+                                <div class="absolute -top-10 -right-10 w-40 h-40 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                                <div class="text-center border-b border-gray-100 dark:border-gray-800 pb-6">
+                                    <h3 class="text-sm font-bold mb-2 text-subtle-text-light dark:text-subtle-text-dark uppercase tracking-widest">TAHMİNİ BİTİŞ TARİHİ</h3>
+                                    <div class="flex flex-col items-center justify-center relative z-10">
+                                        <div class="text-3xl md:text-4xl font-black text-theme-accent mb-1 tracking-tighter" id="targetDate">
+                                            -- --- ----
+                                        </div>
+                                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-pink-50 dark:bg-pink-900/20 text-pink-700 dark:text-pink-300 rounded-lg text-sm font-bold mt-2">
+                                            <span class="material-symbols-outlined text-lg">timelapse</span>
+                                            <span id="totalWeeks">0 Hafta</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-background-light dark:bg-background-dark rounded-xl flex justify-between items-center">
+                                        <div>
+                                            <h4 class="font-bold text-sm text-text-light dark:text-text-dark mb-1">Toplam Fark</h4>
+                                            <div class="text-xs text-subtle-text-light dark:text-subtle-text-dark" id="goalType">Kilo Verme</div>
+                                        </div>
+                                        <div class="text-xl font-black text-text-light dark:text-text-dark" id="weightDiff">0 kg</div>
+                                    </div>
+
+                                    <div class="p-4 bg-background-light dark:bg-background-dark rounded-xl flex justify-between items-center border-l-4 border-theme-accent">
+                                        <div>
+                                            <h4 class="font-bold text-sm text-text-light dark:text-text-dark mb-1">Günlük Kalori Dengesi</h4>
+                                            <div class="text-xs text-subtle-text-light dark:text-subtle-text-dark">TDEE üzerine etki</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-xl font-black text-theme-accent" id="dailyCalories">0 kcal</div>
+                                            <div class="text-[10px] font-bold uppercase text-subtle-text-light dark:text-subtle-text-dark" id="calDirection">Açık</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold text-gray-400 mb-2 uppercase">
+                                        <span>Kolay</span>
+                                        <span>Zorlu</span>
+                                        <span>Agresif</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div id="difficultyBar" class="h-full bg-theme-accent transition-all duration-1000" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="border-t border-text-light/10 dark:border-text-dark/10 py-12">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <span class="font-bold text-xl">FORMLAB</span>
+                </div>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır (WEB PROJESİ).</p>
+            </div>
+  </footer>
+    </div>
+
+    <script>
+        function calculateTime(e) {
+            e.preventDefault();
+            
+            const current = parseFloat(document.getElementById('currentWeight').value);
+            const goal = parseFloat(document.getElementById('goalWeight').value);
+            const pace = parseFloat(document.getElementById('pace').value);
+            
+            if(!current || !goal) return;
+
+            // Fark
+            const diff = Math.abs(current - goal);
+            
+            // Hafta Sayısı
+            const weeks = diff / pace;
+            const days = Math.ceil(weeks * 7);
+
+            // Tarih Hesaplama
+            const today = new Date();
+            const targetDate = new Date(today);
+            targetDate.setDate(today.getDate() + days);
+
+            // Tarih Formatlama (Türkçe)
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = targetDate.toLocaleDateString('tr-TR', options);
+
+            // Kalori Hesabı
+            // 1 kg yağ ≈ 7700 kcal.
+            // Haftalık kalori farkı = pace * 7700
+            // Günlük kalori farkı = (pace * 7700) / 7
+            const dailyCalDiff = Math.round((pace * 7700) / 7);
+
+            // UI Güncelle
+            const resultCard = document.getElementById('resultCard');
+            resultCard.classList.remove('opacity-50', 'pointer-events-none', 'filter', 'blur-[1px]');
+            resultCard.classList.add('opacity-100');
+
+            document.getElementById('targetDate').innerText = formattedDate;
+            document.getElementById('totalWeeks').innerText = Math.round(weeks * 10) / 10 + " Hafta";
+            document.getElementById('weightDiff').innerText = diff.toFixed(1) + " kg";
+
+            const goalTypeEl = document.getElementById('goalType');
+            const dailyCalEl = document.getElementById('dailyCalories');
+            const calDirEl = document.getElementById('calDirection');
+
+            if (current > goal) {
+                goalTypeEl.innerText = "Kilo Verme";
+                dailyCalEl.innerText = "-" + dailyCalDiff + " kcal";
+                calDirEl.innerText = "Açık (Defisit)";
+                dailyCalEl.classList.remove('text-green-500');
+                dailyCalEl.classList.add('text-theme-accent');
+            } else {
+                goalTypeEl.innerText = "Kilo Alma";
+                dailyCalEl.innerText = "+" + dailyCalDiff + " kcal";
+                calDirEl.innerText = "Fazlalık (Surplus)";
+                dailyCalEl.classList.remove('text-theme-accent');
+                dailyCalEl.classList.add('text-green-500');
+            }
+
+            // Zorluk Barı
+            // 0.25 -> %20, 0.5 -> %40, 0.75 -> %60, 1.0 -> %80, 1.25 -> %100
+            // Basit bir oran: (pace / 1.25) * 100
+            let difficulty = (pace / 1.25) * 100;
+            if(difficulty > 100) difficulty = 100;
+            
+            document.getElementById('difficultyBar').style.width = difficulty + "%";
+            
+            // Renk değiştirme
+            const bar = document.getElementById('difficultyBar');
+            if(pace <= 0.5) {
+                bar.classList.remove('bg-yellow-500', 'bg-red-600');
+                bar.classList.add('bg-green-500');
+            } else if (pace <= 0.75) {
+                bar.classList.remove('bg-green-500', 'bg-red-600');
+                bar.classList.add('bg-yellow-500');
+            } else {
+                bar.classList.remove('bg-green-500', 'bg-yellow-500');
+                bar.classList.add('bg-red-600');
+            }
+        }
+
+        // Tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') { html.classList.add('dark'); html.classList.remove('light'); themeIcon.innerText = 'light_mode'; }
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('light')) {
+                html.classList.remove('light'); html.classList.add('dark'); themeIcon.innerText = 'light_mode'; localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark'); html.classList.add('light'); themeIcon.innerText = 'dark_mode'; localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>

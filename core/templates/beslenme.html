@@ -1,0 +1,334 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sağlıklı Beslenme - FORMLAB</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#98CD00",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#010610",
+                        "surface-light": "#F0FDF4",
+                        "surface-dark": "#0B1526",
+                        "text-light": "#010610",
+                        "text-dark": "#FFFFFF",
+                        "text-muted-light": "#4B5563",
+                        "text-muted-dark": "#9CA3AF"
+                    },
+                    fontFamily: { "display": ["Lexend", "sans-serif"] }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark transition-colors duration-300">
+    <div class="relative flex min-h-screen w-full flex-col">
+        
+        <header class="sticky top-0 z-50 w-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-text-light/10 dark:border-text-dark/10">
+            <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+                <a href="{% url 'index' %}" class="flex items-center gap-4">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+                </a>
+                <nav class="hidden md:flex items-center gap-8">
+                    <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'index' %}">Anasayfa</a>
+                    <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'spor' %}">Spor</a>
+                    <a class="text-sm font-medium text-primary" href="{% url 'beslenme' %}">Beslenme</a>
+                    <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'yasam' %}">Yaşam</a>
+                </nav>
+
+                <button id="theme-toggle" class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark hover:ring-2 ring-primary transition-all">
+                    <span id="theme-icon" class="material-symbols-outlined">dark_mode</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1">
+            <section class="relative py-16 md:py-24 bg-gradient-to-b from-surface-light to-transparent dark:from-surface-dark">
+                <div class="max-w-7xl mx-auto px-4 flex flex-col items-center text-center">
+                    <span class="px-4 py-1 rounded-full bg-primary/20 text-primary text-sm font-bold mb-6">Mutfakta Değişim Başlıyor</span>
+                    <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6">
+                        Vücudunu <span class="text-primary">Doğru</span> Yakıtla Besle
+                    </h1>
+                    <p class="text-lg text-text-muted-light dark:text-text-muted-dark max-w-2xl mb-10">
+                        Beslenme, fitness hedeflerinizin %70'ini oluşturur. Sizin için hazırladığımız rehberlerle sürdürülebilir ve keyifli bir beslenme düzeni oluşturun.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <div class="flex items-center gap-2 bg-background-light dark:bg-background-dark px-6 py-3 rounded-2xl shadow-sm border border-text-light/5">
+                            <span class="material-symbols-outlined text-primary">restaurant</span>
+                            <a href="{% url 'mutfak' %}"><span class="font-bold">500+ Sağlıklı Tarif</span></a>
+                        </div>
+                        <div class="flex items-center gap-2 bg-background-light dark:bg-background-dark px-6 py-3 rounded-2xl shadow-sm border border-text-light/5">
+                            <span class="material-symbols-outlined text-primary">analytics</span>
+                            <a href="{% static 'hesapalyıcılar/makro.html' %}"><span class="font-bold">Makro Hesaplayıcı</span></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16">
+                <div class="max-w-7xl mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-12 text-center md:text-left">Temel Besin Grupları</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-surface-light dark:bg-surface-dark p-8 rounded-3xl border border-primary/10 relative overflow-hidden group">
+                            <div class="relative z-10">
+                                <h3 class="text-2xl font-bold mb-4">Proteinler</h3>
+                                <p class="text-text-muted-light dark:text-text-muted-dark mb-6">Kas onarımı ve gelişimi için yapı taşlarıdır. Metabolizmanızı hızlandırır.</p>
+                                <ul class="space-y-2 text-sm font-medium">
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Tavuk Göğsü & Hindi</li>
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Yumurta Beyazı</li>
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Baklagiller</li>
+                                </ul>
+                            </div>
+                            <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-primary/5 group-hover:scale-110 transition-transform">fitness_center</span>
+                        </div>
+
+                        <div class="bg-surface-light dark:bg-surface-dark p-8 rounded-3xl border border-primary/10 relative overflow-hidden group">
+                            <div class="relative z-10">
+                                <h3 class="text-2xl font-bold mb-4">Karbonhidratlar</h3>
+                                <p class="text-text-muted-light dark:text-text-muted-dark mb-6">Antrenmanlarınız için temel enerji kaynağıdır. Kompleks olanları tercih edin.</p>
+                                <ul class="space-y-2 text-sm font-medium">
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Yulaf & Tam Tahıllar</li>
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Tatlı Patates</li>
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Esmer Pirinç</li>
+                                </ul>
+                            </div>
+                            <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-primary/5 group-hover:scale-110 transition-transform">bolt</span>
+                        </div>
+
+                        <div class="bg-surface-light dark:bg-surface-dark p-8 rounded-3xl border border-primary/10 relative overflow-hidden group">
+                            <div class="relative z-10">
+                                <h3 class="text-2xl font-bold mb-4">Sağlıklı Yağlar</h3>
+                                <p class="text-text-muted-light dark:text-text-muted-dark mb-6">Hormon dengesi ve beyin sağlığı için gereklidir. Ölçülü tüketilmelidir.</p>
+                                <ul class="space-y-2 text-sm font-medium">
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Avokado</li>
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Çiğ Kuruyemişler</li>
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Zeytinyağı</li>
+                                </ul>
+                            </div>
+                            <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-primary/5 group-hover:scale-110 transition-transform">eco</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 bg-surface-light dark:bg-surface-dark/20 transition-colors duration-300">
+                <div class="max-w-7xl mx-auto px-4">
+                    <div class="flex justify-between items-end mb-10">
+                        <div>
+                            <h2 class="text-3xl font-bold mb-2">Popüler Tarifler</h2>
+                            <p class="text-text-muted-light dark:text-text-muted-dark">Hızlı, pratik ve besleyici.</p>
+                        </div>
+                        <button class="text-primary font-bold flex items-center gap-2 hover:underline">Tümünü Gör <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-background-light dark:bg-background-dark rounded-3xl overflow-hidden shadow-sm border border-text-light/5 group">
+                            <div class="h-56 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-xl font-bold">Protein Bowl</h3>
+                                    <span class="text-xs bg-primary text-black px-2 py-1 rounded font-bold">450 kcal</span>
+                                </div>
+                                <p class="text-text-muted-light dark:text-text-muted-dark text-sm mb-4">Kinoa, ızgara tavuk ve taze sebzelerle zenginleştirilmiş öğle yemeği.</p>
+                                <div class="flex items-center gap-4 text-xs text-text-muted-light">
+                                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 15 dk</span>
+                                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">star</span> 4.8</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-background-light dark:bg-background-dark rounded-3xl overflow-hidden shadow-sm border border-text-light/5 group">
+                            <div class="h-56 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-xl font-bold">Yeşil Detoks Salatası</h3>
+                                    <span class="text-xs bg-primary text-black px-2 py-1 rounded font-bold">320 kcal</span>
+                                </div>
+                                <p class="text-text-muted-light dark:text-text-muted-dark text-sm mb-4">Lif oranı yüksek, sindirimi kolaylaştıran özel soslu mevsim salatası.</p>
+                                <div class="flex items-center gap-4 text-xs text-text-muted-light">
+                                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 10 dk</span>
+                                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">star</span> 4.5</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-background-light dark:bg-background-dark rounded-3xl overflow-hidden shadow-sm border border-text-light/5 group">
+                            <div class="h-56 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-xl font-bold">Yulaflı Pankek</h3>
+                                    <span class="text-xs bg-primary text-black px-2 py-1 rounded font-bold">380 kcal</span>
+                                </div>
+                                <p class="text-text-muted-light dark:text-text-muted-dark text-sm mb-4">Şekersiz, sadece 3 malzeme ile hazırlanan yüksek proteinli kahvaltı.</p>
+                                <div class="flex items-center gap-4 text-xs text-text-muted-light">
+                                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 12 dk</span>
+                                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">star</span> 4.9</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+           <section class="py-16 bg-surface-light/50 dark:bg-surface-dark/50">
+                <div class="max-w-5xl mx-auto px-4">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold mb-4">Beslenme Hakkında Doğru Bilinen Yanlışlar</h2>
+                        <p class="text-text-muted-light dark:text-text-muted-dark italic">Bilimsel gerçeklerle beslenme efsanelerini birbirinden ayırın.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <details class="group bg-background-light dark:bg-background-dark p-6 rounded-2xl border border-text-light/10 shadow-sm transition-all duration-300 open:ring-2 open:ring-primary">
+                            <summary class="font-bold cursor-pointer list-none flex justify-between items-center">
+                                Saat 18:00'den sonra yemek yemek kilo aldırır mı?
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <p class="mt-4 text-text-muted-light dark:text-text-muted-dark text-sm leading-relaxed border-t border-text-light/5 pt-4">
+                                Vücudunuz için önemli olan gün sonundaki toplam kalori dengesidir. Akşam yemeğinin saati değil, ne yediğiniz ve günlük limitinizi aşıp aşmadığınız kilo alımını belirler. Geç saatte ağır yemek sadece uyku kalitenizi etkileyebilir.
+                            </p>
+                        </details>
+
+                        <details class="group bg-background-light dark:bg-background-dark p-6 rounded-2xl border border-text-light/10 shadow-sm transition-all duration-300 open:ring-2 open:ring-primary">
+                            <summary class="font-bold cursor-pointer list-none flex justify-between items-center">
+                                Yağ tüketimini tamamen kesmeli miyim?
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <p class="mt-4 text-text-muted-light dark:text-text-muted-dark text-sm leading-relaxed border-t border-text-light/5 pt-4">
+                                Hayır! Yağlar vitamin emilimi ve hormon üretimi için hayati öneme sahiptir. Önemli olan trans yağlardan kaçınıp avokado, zeytinyağı ve çiğ kuruyemiş gibi sağlıklı yağ kaynaklarına yönelmektir.
+                            </p>
+                        </details>
+
+                        <details class="group bg-background-light dark:bg-background-dark p-6 rounded-2xl border border-text-light/10 shadow-sm transition-all duration-300 open:ring-2 open:ring-primary">
+                            <summary class="font-bold cursor-pointer list-none flex justify-between items-center">
+                                Glutensiz beslenmek herkes için daha mı sağlıklı?
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <p class="mt-4 text-text-muted-light dark:text-text-muted-dark text-sm leading-relaxed border-t border-text-light/5 pt-4">
+                                Çölyak hastalığınız veya gluten hassasiyetiniz yoksa, gluteni kesmek otomatik olarak "sağlıklı" olduğunuz anlamına gelmez. Birçok glutensiz ürün daha fazla şeker ve işlenmiş içerik barındırabilir.
+                            </p>
+                        </details>
+
+                        <details class="group bg-background-light dark:bg-background-dark p-6 rounded-2xl border border-text-light/10 shadow-sm transition-all duration-300 open:ring-2 open:ring-primary">
+                            <summary class="font-bold cursor-pointer list-none flex justify-between items-center">
+                                Yumurta sarısı kolesterolü yükseltir mi?
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <p class="mt-4 text-text-muted-light dark:text-text-muted-dark text-sm leading-relaxed border-t border-text-light/5 pt-4">
+                                Çoğu sağlıklı bireyde besinsel kolesterolün kan kolesterolü üzerindeki etkisi düşüktür. Yumurta sarısı; D vitamini, kolin ve kaliteli yağlar açısından çok zengindir. Günde 1-2 adet güvenle tüketilebilir.
+                            </p>
+                        </details>
+
+                        <details class="group bg-background-light dark:bg-background-dark p-6 rounded-2xl border border-text-light/10 shadow-sm transition-all duration-300 open:ring-2 open:ring-primary">
+                            <summary class="font-bold cursor-pointer list-none flex justify-between items-center">
+                                Meyve şekeri (fruktoz) kilo aldırır mı?
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <p class="mt-4 text-text-muted-light dark:text-text-muted-dark text-sm leading-relaxed border-t border-text-light/5 pt-4">
+                                Meyvedeki şeker lifle paketlenmiş haldedir, bu da kana karışma hızını yavaşlatır. İşlenmiş şekerli gıdalarla meyveyi bir tutmak yanlıştır. Porsiyon kontrolü dahilinde meyve tüketimi sağlıklıdır.
+                            </p>
+                        </details>
+
+                        <details class="group bg-background-light dark:bg-background-dark p-6 rounded-2xl border border-text-light/10 shadow-sm transition-all duration-300 open:ring-2 open:ring-primary">
+                            <summary class="font-bold cursor-pointer list-none flex justify-between items-center">
+                                Takviye edici gıdalar (supplement) şart mı?
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <p class="mt-4 text-text-muted-light dark:text-text-muted-dark text-sm leading-relaxed border-t border-text-light/5 pt-4">
+                                Adı üstünde bunlar "takviye"dir. Eğer doğal gıdalardan ihtiyacınız olan protein, vitamin ve mineralleri alıyorsanız şart değildir. Ancak yoğun antrenman veya eksiklik durumlarında uzman kontrolünde kullanılabilirler.
+                            </p>
+                        </details>
+
+                        <details class="group bg-background-light dark:bg-background-dark p-6 rounded-2xl border border-text-light/10 shadow-sm transition-all duration-300 open:ring-2 open:ring-primary">
+                            <summary class="font-bold cursor-pointer list-none flex justify-between items-center">
+                                Detoks suları vücudu temizler mi?
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <p class="mt-4 text-text-muted-light dark:text-text-muted-dark text-sm leading-relaxed border-t border-text-light/5 pt-4">
+                                Vücudunuzun detoks sistemini karaciğer ve böbrekleriniz 7/24 zaten yönetir. Özel sular mucize yaratmaz; sadece sıvı alımınızı artırabilir ve sebze tüketimine yardımcı olabilir.
+                            </p>
+                        </details>
+
+                        <details class="group bg-background-light dark:bg-background-dark p-6 rounded-2xl border border-text-light/10 shadow-sm transition-all duration-300 open:ring-2 open:ring-primary">
+                            <summary class="font-bold cursor-pointer list-none flex justify-between items-center">
+                                Light (Diyet) ürünler sınırsız tüketilebilir mi?
+                                <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+                            </summary>
+                            <p class="mt-4 text-text-muted-light dark:text-text-muted-dark text-sm leading-relaxed border-t border-text-light/5 pt-4">
+                                Bir ürünün "light" olması kalorisiz olduğu anlamına gelmez. Yağı azaltılmış ürünlerde tadı korumak için genellikle şeker miktarı artırılır. Her zaman içerik ve kalori etiketini kontrol etmelisiniz.
+                            </p>
+                        </details>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="border-t border-text-light/10 dark:border-text-dark/10 py-12">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <span class="font-bold text-xl">FORMLAB</span>
+                </div>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır (WEB PROJESİ).</p>
+            </div>
+  </footer>
+    </div>
+
+    <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+
+    // 1. Sayfa yüklendiğinde hafızadaki modu kontrol et
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    // Uygula
+    if (currentTheme === 'dark') {
+        html.classList.add('dark');
+        html.classList.remove('light');
+        themeIcon.innerText = 'light_mode';
+    } else {
+        html.classList.add('light');
+        html.classList.remove('dark');
+        themeIcon.innerText = 'dark_mode';
+    }
+
+    // 2. Butona basıldığında modu değiştir ve hafızaya kaydet
+    themeToggle.addEventListener('click', () => {
+        if (html.classList.contains('light')) {
+            // Dark moda geçiş
+            html.classList.remove('light');
+            html.classList.add('dark');
+            themeIcon.innerText = 'light_mode';
+            localStorage.setItem('theme', 'dark'); // Hafızaya yaz
+        } else {
+            // Light moda geçiş
+            html.classList.remove('dark');
+            html.classList.add('light');
+            themeIcon.innerText = 'dark_mode';
+            localStorage.setItem('theme', 'light'); // Hafızaya yaz
+        }
+    });
+</script>
+</body>
+</html>
+
+

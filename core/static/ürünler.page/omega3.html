@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Omega 3 Detay - FORMLAB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#98CD00",
+              "background-light": "#f0f5fb",
+              "background-dark": "#010610",
+              "surface-light": "#ffffff",
+              "surface-dark": "#0b121a",
+              "text-light": "#010610",
+              "text-dark": "#D1F1FF",
+              "subtle-text-light": "#525866",
+              "subtle-text-dark": "#a0a8b2",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Lexend', sans-serif; }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #555; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col">
+
+<header class="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm shadow-sm border-b border-gray-200 dark:border-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="flex h-20 items-center justify-between relative">
+            <div class="flex items-center">
+                <a class="flex items-center gap-3 text-text-light dark:text-text-dark" href="../index.html">
+                    <span class="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+                    <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+                </a>
+            </div>
+            <nav class="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="../index.html">Anasayfa</a>
+                <a class="text-sm font-medium text-primary" href="../takviye.html">Takviye Ürünler</a>
+                <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="../hesaplayıcılar.html">Hesaplayıcılar</a>
+                <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="../program.html">Programlar</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="flex items-center justify-center rounded-full h-10 w-10 bg-gray-100 dark:bg-gray-800 hover:ring-2 ring-primary transition-all">
+                    <span id="theme-icon" class="material-symbols-outlined text-text-light dark:text-text-dark">dark_mode</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow container mx-auto px-4 py-8">
+    
+    <nav class="flex mb-8 text-sm text-subtle-text-light dark:text-subtle-text-dark">
+        <a href="../takviye.html" class="hover:text-primary transition-colors">Takviye Ürünler</a>
+        <span class="mx-2">/</span>
+        <span class="text-text-light dark:text-text-dark font-medium">Omega 3 Balık Yağı</span>
+    </nav>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16 items-start">
+        
+        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl p-8 flex items-center justify-center shadow-lg border border-gray-100 dark:border-gray-800 relative group aspect-square">
+            <img src="../ürünler/omega_3.jpeg" 
+                 alt="Omega 3 Fish Oil" 
+                 class="w-full h-full object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-500">
+            
+            <div class="absolute top-4 right-4 bg-primary text-background-dark text-xs font-bold px-3 py-1 rounded-full">
+                Yüksek EPA/DHA
+            </div>
+        </div>
+
+        <div class="flex flex-col h-full justify-center">
+            <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight">Omega 3 Balık Yağı</h1>
+            <p class="text-xl text-subtle-text-light dark:text-subtle-text-dark mb-8 font-light">
+                Kalp, beyin ve göz sağlığınız için doğadan gelen mucizevi destek.
+            </p>
+
+            <p class="text-text-light dark:text-text-dark mb-8 leading-relaxed text-lg">
+                Derin deniz balıklarından elde edilen, ağır metallerden arındırılmış saf balık yağı. Yüksek oranda EPA ve DHA içeriğiyle kalp-damar sağlığını korumaya, beyin fonksiyonlarını desteklemeye ve antrenman sonrası kas iyileşmesini hızlandırmaya yardımcı olur.
+            </p>
+
+            <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
+                <h4 class="font-bold mb-4 text-sm text-subtle-text-light dark:text-subtle-text-dark uppercase tracking-widest">Ürün Avantajları</h4>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">check_circle</span>
+                        <span class="font-medium">Ağır Metal İçermez (IFOS Onaylı)</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">check_circle</span>
+                        <span class="font-medium">Trigliserid Form (Yüksek Emilim)</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">check_circle</span>
+                        <span class="font-medium">Koku Giderilmiş (Limon Aromalı)</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">check_circle</span>
+                        <span class="font-medium">Yüksek EPA/DHA Oranı</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        
+        <div class="lg:col-span-2">
+            <h3 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">nutrition</span>
+                İçerik Analizi
+            </h3>
+            
+            <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-gray-100 dark:bg-gray-800">
+                        <tr>
+                            <th class="px-6 py-4 font-bold text-text-light dark:text-text-dark">Etken Madde</th>
+                            <th class="px-6 py-4 font-bold text-text-light dark:text-text-dark">Miktar (2 Yumuşak Kapsül)</th>
+                            <th class="px-6 py-4 font-bold text-text-light dark:text-text-dark">%BRD*</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-surface-light dark:bg-surface-dark">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">Balık Yağı</td>
+                            <td class="px-6 py-4">2000 mg</td>
+                            <td class="px-6 py-4 font-bold text-subtle-text-light dark:text-subtle-text-dark">-</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">Omega 3 Yağ Asitleri</td>
+                            <td class="px-6 py-4">1200 mg</td>
+                            <td class="px-6 py-4 font-bold text-subtle-text-light dark:text-subtle-text-dark">-</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium pl-8 border-l-4 border-primary/20">EPA (Eikosapentaenoik Asit)</td>
+                            <td class="px-6 py-4">720 mg</td>
+                            <td class="px-6 py-4 font-bold text-subtle-text-light dark:text-subtle-text-dark">-</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium pl-8 border-l-4 border-primary/20">DHA (Dokosaheksaenoik Asit)</td>
+                            <td class="px-6 py-4">480 mg</td>
+                            <td class="px-6 py-4 font-bold text-subtle-text-light dark:text-subtle-text-dark">-</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">Vitamin E (Koruyucu)</td>
+                            <td class="px-6 py-4">10 mg</td>
+                            <td class="px-6 py-4 text-primary font-bold">%83</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-3 text-xs text-subtle-text-light dark:text-subtle-text-dark italic">*BRD: Beslenme Referans Değeri yoktur.</p>
+        </div>
+
+        <div class="lg:col-span-1 space-y-6">
+            
+            <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-200 dark:border-gray-800">
+                <h4 class="font-bold text-lg mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">schedule</span>
+                    Nasıl Kullanılmalı?
+                </h4>
+                <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark leading-relaxed">
+                    Yetişkinler için günde 2 yumuşak kapsül, tercihen <strong>tok karnına</strong> (öğle veya akşam yemeği ile birlikte) tüketilmesi tavsiye edilir. Düzenli kullanım en iyi sonucu verir.
+                </p>
+            </div>
+
+            <div class="bg-yellow-50 dark:bg-yellow-900/10 p-6 rounded-xl border border-yellow-200 dark:border-yellow-900/30">
+                <h4 class="font-bold text-lg mb-4 flex items-center gap-2 text-yellow-700 dark:text-yellow-500">
+                    <span class="material-symbols-outlined">info</span>
+                    Bilgilendirme
+                </h4>
+                <p class="text-sm text-subtle-text-light dark:text-subtle-text-dark">
+                    Kan sulandırıcı ilaç kullananlar veya cerrahi operasyon geçirecek kişiler, Omega 3 takviyesi kullanmadan önce mutlaka doktorlarına danışmalıdır.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <section class="max-w-4xl mx-auto w-full">
+        <h3 class="text-2xl font-bold mb-8 text-center flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-primary text-3xl">help</span>
+            Sıkça Sorulan Sorular
+        </h3>
+
+        <div class="space-y-4">
+            
+            <details class="group bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm transition-all hover:shadow-md">
+                <summary class="flex cursor-pointer items-center justify-between p-6 font-medium text-text-light dark:text-text-dark">
+                    <span>Balık yağı kilo aldırır mı?</span>
+                    <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-primary">keyboard_arrow_down</span>
+                </summary>
+                <div class="px-6 pb-6 text-sm text-subtle-text-light dark:text-subtle-text-dark leading-relaxed">
+                    Hayır. Omega 3 yağ asitleri "sağlıklı yağlar" sınıfına girer ve metabolizmayı hızlandırıcı etkisi vardır. Kalori değeri oldukça düşüktür ve doğrudan kilo alımına (yağlanmaya) sebep olmaz.
+                </div>
+            </details>
+
+            <details class="group bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm transition-all hover:shadow-md">
+                <summary class="flex cursor-pointer items-center justify-between p-6 font-medium text-text-light dark:text-text-dark">
+                    <span>Ağızda balık tadı veya kokusu yapar mı?</span>
+                    <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-primary">keyboard_arrow_down</span>
+                </summary>
+                <div class="px-6 pb-6 text-sm text-subtle-text-light dark:text-subtle-text-dark leading-relaxed">
+                    FORMLAB Omega 3, özel kapsül teknolojisi ve eklenen doğal limon aroması sayesinde balık kokusu ve tadını minimize etmiştir. Tok karnına tüketildiğinde mideden gelen rahatsız edici koku (reflü etkisi) oluşmaz.
+                </div>
+            </details>
+
+            <details class="group bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm transition-all hover:shadow-md">
+                <summary class="flex cursor-pointer items-center justify-between p-6 font-medium text-text-light dark:text-text-dark">
+                    <span>EPA ve DHA nedir, ne işe yarar?</span>
+                    <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-primary">keyboard_arrow_down</span>
+                </summary>
+                <div class="px-6 pb-6 text-sm text-subtle-text-light dark:text-subtle-text-dark leading-relaxed">
+                    EPA (Eikosapentaenoik Asit) daha çok kalp ve damar sağlığını korumaya odaklanırken, DHA (Dokosaheksaenoik Asit) beyin fonksiyonları, hafıza ve göz sağlığı için kritiktir. İkisinin dengeli alımı vücut için en faydalı olanıdır.
+                </div>
+            </details>
+
+            <details class="group bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm transition-all hover:shadow-md">
+                <summary class="flex cursor-pointer items-center justify-between p-6 font-medium text-text-light dark:text-text-dark">
+                    <span>Sporcular neden Omega 3 kullanmalıdır?</span>
+                    <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-primary">keyboard_arrow_down</span>
+                </summary>
+                <div class="px-6 pb-6 text-sm text-subtle-text-light dark:text-subtle-text-dark leading-relaxed">
+                    Omega 3'ün güçlü anti-enflamatuar (iltihap önleyici) özelliği vardır. Ağır antrenmanlar sonrası kaslarda oluşan mikro hasarların ve ağrıların daha hızlı iyileşmesine yardımcı olur, ayrıca eklem sağlığını destekler.
+                </div>
+            </details>
+
+            <details class="group bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm transition-all hover:shadow-md">
+                <summary class="flex cursor-pointer items-center justify-between p-6 font-medium text-text-light dark:text-text-dark">
+                    <span>Yaz aylarında kullanılır mı?</span>
+                    <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-primary">keyboard_arrow_down</span>
+                </summary>
+                <div class="px-6 pb-6 text-sm text-subtle-text-light dark:text-subtle-text-dark leading-relaxed">
+                    Evet, Omega 3 yılın dört mevsimi kullanılabilir. "Yazın balık yağı kullanılmaz" bilgisi halk arasında yaygın ama yanlış bir inanıştır. Vücudun Omega 3 ihtiyacı mevsime göre değişmez.
+                </div>
+            </details>
+
+            <details class="group bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm transition-all hover:shadow-md">
+                <summary class="flex cursor-pointer items-center justify-between p-6 font-medium text-text-light dark:text-text-dark">
+                    <span>Trigliserid form ne anlama gelir?</span>
+                    <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-primary">keyboard_arrow_down</span>
+                </summary>
+                <div class="px-6 pb-6 text-sm text-subtle-text-light dark:text-subtle-text-dark leading-relaxed">
+                    Doğal balık yağının yapısına en yakın formdur. Etil ester formuna göre vücut tarafından emilimi (biyoyararlanımı) çok daha yüksektir. FORMLAB Omega 3 ürünleri sadece Trigliserid formda yağlar içerir.
+                </div>
+            </details>
+
+        </div>
+    </section>
+
+</main>
+
+<footer class="border-t border-text-light/10 dark:border-text-dark/10 py-12">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <span class="font-bold text-xl">FORMLAB</span>
+                </div>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır (WEB PROJESİ).</p>
+            </div>
+  </footer>
+
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+        html.classList.add('dark');
+        html.classList.remove('light');
+        themeIcon.innerText = 'light_mode';
+    }
+
+    themeToggle.addEventListener('click', () => {
+        if (html.classList.contains('light')) {
+            html.classList.remove('light');
+            html.classList.add('dark');
+            themeIcon.innerText = 'light_mode';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.remove('dark');
+            html.classList.add('light');
+            themeIcon.innerText = 'dark_mode';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+</script>
+</body>
+</html>

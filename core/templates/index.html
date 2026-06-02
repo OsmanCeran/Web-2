@@ -1,0 +1,336 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="tr" style="scroll-behavior: smooth;">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Anasayfa - FORMLAB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#98CD00",
+            "background-light": "#FFFFFF",
+            "background-dark": "#010610",
+            "surface-light": "#F3F4F6",
+            "surface-dark": "#0B1526",
+            "text-light": "#010610",
+            "text-dark": "#FFFFFF",
+            "text-muted-light": "#4B5563",
+            "text-muted-dark": "#9CA3AF"
+          },
+          fontFamily: { "display": ["Lexend", "sans-serif"] },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+        },
+      },
+    }
+</script>
+<style>
+    /* Modal animasyonları için */
+    .modal-backdrop {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    .modal-content {
+        transform: scale(0.95);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .modal-backdrop.active .modal-content {
+        transform: scale(1);
+        opacity: 1;
+    }
+</style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+    
+<header class="sticky top-0 z-50 w-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between border-b border-text-light/10 dark:border-text-dark/10 h-20">
+      
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+        <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6">
+        
+        <a class="text-sm font-medium text-primary transition-colors" href="{% url 'index' %}">Anasayfa</a>
+        <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'takviye' %}">Takviye Ürünler</a>
+        <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'mutfak' %}">Akıllı Mutfak</a>
+        <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'hesaplayicilar' %}">Hesaplayıcılar</a>
+        <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'egzersizler' %}">Egzersizler</a>
+        <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'program' %}">Programlar</a>
+        </nav>
+
+      <button id="theme-toggle" class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark hover:ring-2 ring-primary transition-all">
+        <span id="theme-icon" class="material-symbols-outlined">dark_mode</span>
+      </button>
+
+    </div>
+  </div>
+</header>
+
+<main class="flex-1">
+    
+<section class="relative">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="my-16 md:my-24">
+<div class="relative flex min-h-[520px] flex-col items-center justify-center gap-8 rounded-2xl bg-cover bg-center bg-no-repeat p-8 text-center" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(1, 6, 16, 0.7) 100%), url("https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=2070");'>
+<div class="flex flex-col gap-4 max-w-3xl">
+<h1 class="text-white text-4xl md:text-6xl font-black leading-tight tracking-tighter">
+                    Sağlık ve Fitness Hedeflerinize Ulaşın
+                  </h1>
+<h2 class="text-white/80 text-base md:text-lg font-normal leading-normal">
+                    Spor ve beslenme ile en iyi versiyonunuza ulaşmanıza yardımcı oluyoruz.
+                  </h2>
+</div>
+<a href="#kesfet-bolumu" class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-8 bg-primary text-background-dark text-base font-bold tracking-wide hover:scale-105 transition-all">
+<span class="truncate">Keşfet</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+
+<section id="kesfet-bolumu" class="bg-surface-light dark:bg-surface-dark py-16 md:py-24 transition-colors duration-300">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col gap-12">
+<div class="flex flex-col gap-4 text-center items-center">
+<h2 class="text-3xl md:text-4xl font-bold tracking-tighter max-w-2xl">
+                  Sağlıklı Yaşam Tarzını Keşfet
+                </h2>
+<p class="text-text-muted-light dark:text-text-muted-dark text-base font-normal leading-normal max-w-3xl">
+                  Spor, beslenme ve zindelik konularında ihtiyacınız olan her şey burada. Alanında uzmanlar tarafından hazırlanan içeriklerle hedeflerinize bir adım daha yaklaşın.
+                </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="flex flex-col gap-4 rounded-2xl bg-background-light dark:bg-background-dark p-6 shadow-sm border border-text-light/5">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl" style='background-image: url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000");'></div>
+<div class="flex flex-col gap-2">
+<p class="text-xl font-bold">Spor</p>
+<p class="text-text-muted-light dark:text-text-muted-dark text-sm font-normal">Antrenman rutinleri, egzersiz ipuçları ve fiziksel aktivitenin faydaları hakkında bilgiler.</p>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-bold text-sm mt-auto hover:gap-3 transition-all" href="{% url 'spor' %}">Daha Fazla Oku <span class="material-symbols-outlined">arrow_forward</span></a>
+</div>
+<div class="flex flex-col gap-4 rounded-2xl bg-background-light dark:bg-background-dark p-6 shadow-sm border border-text-light/5">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl" style='background-image: url("https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1000");'></div>
+<div class="flex flex-col gap-2">
+<p class="text-xl font-bold">Sağlıklı Beslenme</p>
+<p class="text-text-muted-light dark:text-text-muted-dark text-sm font-normal">Beslenme rehberleri, sağlıklı tarifler ve dengeli beslenmenin önemi üzerine yazılar.</p>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-bold text-sm mt-auto hover:gap-3 transition-all" href="{% url 'beslenme' %}">Daha Fazla Oku <span class="material-symbols-outlined">arrow_forward</span></a>
+</div>
+<div class="flex flex-col gap-4 rounded-2xl bg-background-light dark:bg-background-dark p-6 shadow-sm border border-text-light/5">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl" style='background-image: url("https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000");'></div>
+<div class="flex flex-col gap-2">
+<p class="text-xl font-bold">Sağlıklı Yaşam</p>
+<p class="text-text-muted-light dark:text-text-muted-dark text-sm font-normal">Bütünsel sağlık konuları, uyku düzeni, zihinsel sağlık ve sağlıklı alışkanlıklar kazanma üzerine içerikler.</p>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-bold text-sm mt-auto hover:gap-3 transition-all" href="{% url 'yasam' %}">Daha Fazla Oku <span class="material-symbols-outlined">arrow_forward</span></a>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="border-t border-text-light/10 dark:border-text-dark/10 py-12">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <span class="font-bold text-xl">FORMLAB</span>
+                </div>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır (WEB PROJESİ).</p>
+            </div>
+</footer>
+
+</div>
+</div>
+
+<button onclick="openVitaminModal()" class="fixed z-50 bottom-24 right-4 md:bottom-32 md:right-8 flex items-center justify-center w-16 h-16 rounded-full bg-primary text-background-dark shadow-xl hover:scale-110 hover:shadow-2xl transition-all group" aria-label="Günün Vitamini">
+    <span class="material-symbols-outlined text-3xl">medication</span>
+    
+    <span class="absolute right-full mr-3 px-3 py-2 bg-surface-dark dark:bg-surface-light text-text-dark dark:text-text-light text-sm font-bold rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">
+        Günün Vitamini
+    </span>
+</button>
+
+
+<div id="vitamin-modal" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div class="modal-content relative w-full max-w-lg overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark border border-text-light/10 dark:border-text-dark/10 shadow-2xl">
+        
+        <div class="flex items-center justify-between p-6 border-b border-text-light/10 dark:border-text-dark/10 bg-background-light dark:bg-background-dark">
+            <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary">
+                    <span class="material-symbols-outlined">medication</span>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-text-light dark:text-text-dark">Günün Vitamini</h3>
+                    <p class="text-xs text-text-muted-light dark:text-text-muted-dark">Her gün yeni bir bilgi</p>
+                </div>
+            </div>
+            <button onclick="closeVitaminModal()" class="text-text-muted-light hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div class="p-6">
+            <h2 id="modal-v-name" class="text-2xl font-bold text-primary mb-3">Yükleniyor...</h2>
+            <p id="modal-v-desc" class="text-text-light dark:text-text-dark mb-6 leading-relaxed">
+                ...
+            </p>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-3 rounded-xl bg-background-light dark:bg-background-dark border border-text-light/5">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined text-primary text-sm">scale</span>
+                        <span class="text-xs font-bold uppercase text-text-muted-light dark:text-text-muted-dark">Doz</span>
+                    </div>
+                    <span id="modal-v-dose" class="font-medium text-sm">-</span>
+                </div>
+                <div class="p-3 rounded-xl bg-background-light dark:bg-background-dark border border-text-light/5">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined text-primary text-sm">nutrition</span>
+                        <span class="text-xs font-bold uppercase text-text-muted-light dark:text-text-muted-dark">Kaynak</span>
+                    </div>
+                    <span id="modal-v-source" class="font-medium text-sm">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 bg-background-light/50 dark:bg-background-dark/50 border-t border-text-light/10 dark:border-text-dark/10 text-center">
+            <button onclick="closeVitaminModal()" class="w-full py-3 rounded-xl bg-primary text-background-dark font-bold hover:bg-opacity-90 transition-all">
+                Harika!
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- TEMA YÖNETİMİ ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    if (currentTheme === 'dark') {
+        html.classList.add('dark');
+        html.classList.remove('light');
+        themeIcon.innerText = 'light_mode';
+    } else {
+        html.classList.add('light');
+        html.classList.remove('dark');
+        themeIcon.innerText = 'dark_mode';
+    }
+
+    themeToggle.addEventListener('click', () => {
+        if (html.classList.contains('light')) {
+            html.classList.remove('light');
+            html.classList.add('dark');
+            themeIcon.innerText = 'light_mode';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.remove('dark');
+            html.classList.add('light');
+            themeIcon.innerText = 'dark_mode';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // --- GÜNÜN VİTAMİNİ YÖNETİMİ ---
+    
+    // Veri Seti
+    const supplements = [
+        {
+            name: "Vitamin C (Askorbik Asit)",
+            desc: "Güçlü bir antioksidandır, bağışıklık sistemini destekler ve kolajen üretimini artırarak cilt sağlığına katkıda bulunur.",
+            dose: "75-90 mg/gün",
+            source: "Portakal, Kivi, Biber"
+        },
+        {
+            name: "Magnezyum",
+            desc: "Kas kramplarını önler, sinir sistemini yatıştırır ve uyku kalitesini artırmaya yardımcı olur.",
+            dose: "300-400 mg/gün",
+            source: "Ispanak, Badem, Muz"
+        },
+        {
+            name: "D3 Vitamini",
+            desc: "Kemik sağlığı için kalsiyum emilimini sağlar ve bağışıklık sisteminin normal fonksiyonuna katkıda bulunur.",
+            dose: "600-800 IU/gün",
+            source: "Güneş, Somon, Yumurta"
+        },
+        {
+            name: "Omega-3",
+            desc: "Kalp ve damar sağlığını korur, beyin fonksiyonlarını destekler ve vücuttaki inflamasyonu azaltır.",
+            dose: "1000 mg/gün",
+            source: "Somon, Ceviz, Keten Tohumu"
+        },
+        {
+            name: "Çinko (Zinc)",
+            desc: "Yara iyileşmesini hızlandırır, protein sentezine yardımcı olur ve testosteron seviyelerini destekler.",
+            dose: "11 mg/gün",
+            source: "Kırmızı Et, Kabak Çekirdeği"
+        }
+    ];
+
+    const modal = document.getElementById('vitamin-modal');
+
+    function calculateDailyVitamin() {
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        const dayOfYear = Math.floor(diff / oneDay);
+        
+        const index = dayOfYear % supplements.length;
+        return supplements[index];
+    }
+
+    function openVitaminModal() {
+        const data = calculateDailyVitamin();
+        
+        // Verileri modal içine yaz
+        document.getElementById('modal-v-name').innerText = data.name;
+        document.getElementById('modal-v-desc').innerText = data.desc;
+        document.getElementById('modal-v-dose').innerText = data.dose;
+        document.getElementById('modal-v-source').innerText = data.source;
+
+        // Modalı göster
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Arka plan kaydırmayı engelle
+    }
+
+    function closeVitaminModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Kaydırmayı geri aç
+    }
+
+    // Modalın dışına tıklayınca kapatma
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeVitaminModal();
+        }
+    });
+
+</script>
+
+</body>
+</html>
+

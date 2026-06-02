@@ -1,0 +1,271 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="tr" style="scroll-behavior: smooth;">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Akıllı Mutfak - FORMLAB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#98CD00",
+            "background-light": "#FFFFFF",
+            "background-dark": "#010610",
+            "surface-light": "#F3F4F6",
+            "surface-dark": "#0B1526",
+            "text-light": "#010610",
+            "text-dark": "#FFFFFF",
+            "text-muted-light": "#4B5563",
+            "text-muted-dark": "#9CA3AF"
+          },
+          fontFamily: { "display": ["Lexend", "sans-serif"] },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+        },
+      },
+    }
+</script>
+<style>
+    .ingredient-btn.selected {
+        background-color: #98CD00;
+        color: #010610;
+        border-color: #98CD00;
+        font-weight: 700;
+    }
+    .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+
+<body class="font-display text-text-light dark:text-text-dark transition-colors duration-300">
+
+    <div class="fixed inset-0 w-full h-full -z-50">
+        <img src="{% static 'ürünler/unnamed.jpg' %}" 
+             alt="Mutfak Arkaplan" 
+             class="w-full h-full object-cover">
+    </div>
+
+    <div class="fixed inset-0 w-full h-full bg-black/60 dark:bg-black/80 -z-40"></div>
+
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+    
+            <header class="sticky top-0 z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md shadow-sm">
+                <div class="container mx-auto px-4">
+                    <div class="flex h-20 items-center justify-between relative">
+                        <div class="flex items-center">
+                            <a class="flex items-center gap-3 text-text-light dark:text-text-dark min-w-[140px]" href="{% url 'index' %}">
+                                <span class="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+                                <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+                            </a>
+                        </div>
+                        <nav class="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                            <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="{% url 'index' %}">Anasayfa</a>
+                            <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="{% url 'takviye' %}">Takviye Ürünler</a>
+                            <a class="text-sm font-medium text-primary transition-colors" href="{% url 'mutfak' %}">Akıllı Mutfak</a>
+                            <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="{% url 'hesaplayicilar' %}">Hesaplayıcılar</a>
+                            <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'egzersizler' %}">Egzersizler</a>
+                            <a class="text-sm font-medium hover:text-primary" href="{% url 'program' %}">Programlar</a>
+                        </nav>
+                        <div class="flex items-center gap-4 min-w-[140px] justify-end">
+                            <button id="theme-toggle" class="flex items-center justify-center rounded-full h-10 w-10 bg-gray-100 dark:bg-gray-800 hover:ring-2 ring-primary transition-all">
+                                <span id="theme-icon" class="material-symbols-outlined text-text-light dark:text-text-dark">dark_mode</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+<main class="flex-1">
+    
+<section class="py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <span class="material-symbols-outlined text-primary text-6xl mb-4 drop-shadow-lg">kitchen</span>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tighter mb-4 text-white drop-shadow-lg">Elimde Ne Var?</h1>
+            <p class="text-white/90 max-w-2xl mx-auto text-lg drop-shadow-md">
+                Mutfağındaki malzemeleri seç, sana en uygun yüksek proteinli ve sağlıklı tarifleri hemen getirelim.
+            </p>
+        </div>
+
+        <div class="bg-white/95 dark:bg-[#0B1526]/95 p-6 md:p-8 rounded-3xl shadow-2xl border border-white/20 backdrop-blur-md mb-10">
+            <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-text-light dark:text-text-dark">
+                <span class="material-symbols-outlined text-primary">grocery</span>
+                Malzemelerini İşaretle
+            </h3>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3" id="ingredient-grid">
+                </div>
+
+            <div class="mt-8 text-center">
+                <button onclick="findRecipes()" class="px-8 py-4 bg-primary text-text-dark font-bold rounded-xl shadow-lg shadow-primary/30 hover:scale-105 transition-transform flex items-center gap-2 mx-auto">
+                    <span class="material-symbols-outlined">restaurant_menu</span>
+                    Tarif Bul
+                </button>
+            </div>
+        </div>
+
+        <div id="recipe-results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+            </div>
+
+        <div id="no-recipe-msg" class="hidden text-center p-12 bg-surface-light/95 dark:bg-surface-dark/95 rounded-3xl border border-dashed border-text-muted-light/30 backdrop-blur-sm">
+            <span class="material-symbols-outlined text-4xl text-text-muted-light mb-2">soup_kitchen</span>
+            <p class="text-text-muted-light">Maalesef seçtiğin malzemelerle tam eşleşen bir tarif bulamadık. Daha fazla malzeme seçmeyi dene!</p>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer class="border-t border-white/10 py-12 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+            <span class="font-bold text-xl text-text-light dark:text-text-dark">FORMLAB</span>
+        </div>
+        <p class="text-text-muted-light dark:text-text-muted-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+        <p class="text-text-muted-light dark:text-text-muted-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır.</p>
+    </div>
+</footer>
+
+</div>
+</div>
+
+<script>
+    // --- TEMA AYARLARI ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    if (currentTheme === 'dark') { html.classList.add('dark'); html.classList.remove('light'); themeIcon.innerText = 'light_mode'; } 
+    else { html.classList.add('light'); html.classList.remove('dark'); themeIcon.innerText = 'dark_mode'; }
+
+    themeToggle.addEventListener('click', () => {
+        if (html.classList.contains('light')) {
+            html.classList.remove('light'); html.classList.add('dark'); themeIcon.innerText = 'light_mode'; localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.remove('dark'); html.classList.add('light'); themeIcon.innerText = 'dark_mode'; localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // --- AKILLI MUTFAK MANTIĞI ---
+    const availableIngredients = [
+        "Yumurta", "Tavuk Göğsü", "Yulaf", "Muz", "Süt", "Pirinç", 
+        "Lor Peyniri", "Domates", "Biber", "Ton Balığı", "Makarna", 
+        "Fıstık Ezmesi", "Yoğurt", "Ispanak", "Patates", "Soğan"
+    ];
+
+    const recipes = [
+        {
+            name: "Proteinli Yulaf Lapası",
+            ingredients: ["Yulaf", "Süt", "Muz", "Fıstık Ezmesi"],
+            image: "https://images.unsplash.com/photo-1517673132405-a56a62b18caf?q=80&w=400",
+            desc: "Sabahları enerji deposu, yüksek lifli ve proteinli kahvaltı."
+        },
+        {
+            name: "Menemen (Sporcu Usulü)",
+            ingredients: ["Yumurta", "Domates", "Biber", "Lor Peyniri"],
+            image: "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?q=80&w=400",
+            desc: "Klasik lezzet, yumurta beyazı eklenerek protein oranı artırılmış."
+        },
+        {
+            name: "Tavuklu Pilav Bowl",
+            ingredients: ["Tavuk Göğsü", "Pirinç", "Domates"],
+            image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400",
+            desc: "Bodybuilding klasiği. Temiz karbonhidrat ve yağsız protein."
+        },
+        {
+            name: "Ton Balıklı Makarna",
+            ingredients: ["Ton Balığı", "Makarna", "Domates"],
+            image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=400",
+            desc: "Pratik ve hızlı bir öğle yemeği alternatifi."
+        },
+        {
+            name: "Muzlu Pancake",
+            ingredients: ["Yumurta", "Muz", "Yulaf"],
+            image: "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?q=80&w=400",
+            desc: "Şekersiz, sadece 3 malzemeli tatlı krizine birebir çözüm."
+        },
+        {
+            name: "Ispanaklı Omlet",
+            ingredients: ["Yumurta", "Ispanak", "Lor Peyniri"],
+            image: "https://images.unsplash.com/photo-1510693206972-df098062cb71?q=80&w=400",
+            desc: "Vitamin deposu yeşil ve güçlü bir kahvaltı."
+        }
+    ];
+
+    const selectedIngredients = new Set();
+    const grid = document.getElementById('ingredient-grid');
+
+    availableIngredients.forEach(ing => {
+        const btn = document.createElement('button');
+        btn.className = "ingredient-btn p-3 rounded-xl border border-text-light/20 dark:border-text-dark/20 bg-white/80 dark:bg-surface-dark/80 hover:border-primary transition-all text-sm font-medium text-text-light dark:text-text-dark shadow-sm";
+        btn.innerText = ing;
+        btn.onclick = () => toggleIngredient(btn, ing);
+        grid.appendChild(btn);
+    });
+
+    function toggleIngredient(btn, ing) {
+        if (selectedIngredients.has(ing)) {
+            selectedIngredients.delete(ing);
+            btn.classList.remove('selected');
+        } else {
+            selectedIngredients.add(ing);
+            btn.classList.add('selected');
+        }
+    }
+
+    function findRecipes() {
+        const resultsDiv = document.getElementById('recipe-results');
+        const noResultDiv = document.getElementById('no-recipe-msg');
+        resultsDiv.innerHTML = "";
+        
+        const matchedRecipes = recipes.map(recipe => {
+            const missing = recipe.ingredients.filter(i => !selectedIngredients.has(i));
+            const present = recipe.ingredients.filter(i => selectedIngredients.has(i));
+            return { ...recipe, missing, present, matchRate: present.length };
+        }).filter(r => r.matchRate > 0).sort((a, b) => b.matchRate - a.matchRate);
+
+        if (matchedRecipes.length === 0) {
+            resultsDiv.classList.add('hidden');
+            noResultDiv.classList.remove('hidden');
+        } else {
+            noResultDiv.classList.add('hidden');
+            resultsDiv.classList.remove('hidden');
+
+            matchedRecipes.forEach(r => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-surface-dark rounded-2xl overflow-hidden shadow-lg border border-text-light/10 dark:border-text-dark/10 flex flex-col animate-fade-in backdrop-blur-sm";
+                
+                const missingHTML = r.missing.length > 0 
+                    ? `<p class="text-xs text-red-500 mt-2 font-medium">Eksikler: ${r.missing.join(', ')}</p>` 
+                    : `<p class="text-xs text-primary mt-2 font-bold">Tüm malzemeler var! 🎉</p>`;
+
+                card.innerHTML = `
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('${r.image}')"></div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-xl font-bold text-text-light dark:text-text-dark">${r.name}</h4>
+                            <span class="bg-surface-light dark:bg-background-dark px-2 py-1 rounded text-xs font-bold border border-text-light/10 text-primary">${r.present.length}/${r.ingredients.length}</span>
+                        </div>
+                        <p class="text-sm text-text-muted-light dark:text-text-muted-dark flex-1 line-clamp-2">${r.desc}</p>
+                        ${missingHTML}
+                    </div>
+                `;
+                resultsDiv.appendChild(card);
+            });
+        }
+    }
+</script>
+</body>
+</html>
+
+

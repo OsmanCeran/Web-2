@@ -1,0 +1,544 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Takviye Ürünler Sayfası - FORMLAB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#98CD00",
+              "background-light": "#f0f5fb",
+              "background-dark": "#010610",
+              "surface-light": "#ffffff",
+              "surface-dark": "#0b121a",
+              "text-light": "#010610",
+              "text-dark": "#D1F1FF",
+              "subtle-text-light": "#525866",
+              "subtle-text-dark": "#a0a8b2",
+              "accent": "#D1F1FF",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Lexend', sans-serif; }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      /* Arama sonuçları için özel scrollbar */
+      #search-suggestions::-webkit-scrollbar { width: 6px; }
+      #search-suggestions::-webkit-scrollbar-thumb { background-color: #98CD00; border-radius: 4px; }
+      
+      /* Filtre animasyonu */
+      .product-card { transition: all 0.3s ease-in-out; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col">
+
+<header class="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm shadow-sm">
+            <div class="container mx-auto px-4">
+                <div class="flex h-20 items-center justify-between relative">
+                    <div class="flex items-center">
+                        <a class="flex items-center gap-3 text-text-light dark:text-text-dark min-w-[140px]" href="{% url 'index' %}">
+                            <span class="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+                            <h2 class="text-xl font-bold tracking-tighter">FORMLAB</h2>
+                        </a>
+                    </div>
+                    <nav class="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="{% url 'index' %}">Anasayfa</a>
+                        <a class="text-sm font-medium text-primary dark:hover:text-primary transition-colors" href="{% url 'takviye' %}">Takviye Ürünler</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'mutfak' %}">Akıllı Mutfak</a>
+                        <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="{% url 'hesaplayicilar' %}">Hesaplayıcılar</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors" href="{% url 'egzersizler' %}">Egzersizler</a>
+                        <a class="text-sm font-medium hover:text-primary" href="{% url 'program' %}">Programlar</a>
+                    </nav>
+                    <div class="flex items-center gap-4 min-w-[140px] justify-end">
+                        <button id="theme-toggle" class="flex items-center justify-center rounded-full h-10 w-10 bg-gray-100 dark:bg-gray-800 hover:ring-2 ring-primary transition-all">
+                            <span id="theme-icon" class="material-symbols-outlined text-text-light dark:text-text-dark">dark_mode</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+<main class="flex-grow">
+<section class="relative bg-cover bg-center py-24 md:py-32" style='background-image: linear-gradient(rgba(1, 6, 16, 0.7) 0%, rgba(1, 6, 16, 0.9) 100%), url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070");'>
+<div class="container mx-auto px-4 text-center text-white">
+<div class="flex flex-col items-center gap-6 max-w-3xl mx-auto">
+<h1 class="text-4xl font-black leading-tight tracking-tighter md:text-6xl">
+    Hedeflerinize Ulaşmak İçin <span class="text-primary">Doğru Destek</span>
+</h1>
+<h2 class="text-lg font-normal leading-normal text-gray-300 md:text-xl">
+    Vücudunuzun ihtiyaç duyduğu en kaliteli vitamin, mineral ve supplementleri keşfedin.
+</h2>
+
+<div class="mt-4 flex w-full max-w-lg items-center relative z-50"> 
+    <label class="sr-only" for="hero-search">Ürün ara...</label>
+    <div class="relative w-full">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+            <span class="material-symbols-outlined text-gray-400">search</span>
+        </div>
+        
+        <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-full border-2 border-transparent bg-white/10 focus:border-primary focus:ring-primary h-14 placeholder:text-gray-400 pl-12 pr-32 text-base font-normal text-white backdrop-blur-sm transition-all" 
+               id="hero-search" 
+               autocomplete="off" 
+               placeholder="Aradığınız ürünü yazın..." value=""/>
+        
+        <button id="search-button" class="absolute right-2 top-1/2 -translate-y-1/2 flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-11 px-5 bg-primary text-background-dark text-base font-bold hover:bg-opacity-90 transition-colors">
+            <span class="truncate">Ara</span>
+        </button>
+
+        <ul id="search-suggestions" class="absolute left-0 top-full mt-2 w-full bg-surface-light dark:bg-surface-dark rounded-xl shadow-xl overflow-hidden hidden max-h-80 overflow-y-auto border border-gray-200 dark:border-gray-800 text-left">
+            </ul>
+
+    </div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="container mx-auto px-4 py-10 md:py-16">
+<section class="mb-10">
+    <h3 class="text-2xl font-bold mb-6 text-center md:text-left">Kategoriler</h3>
+    <div class="flex flex-wrap items-center justify-center gap-3 md:justify-start">
+        <button class="filter-btn active flex h-10 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-primary pl-5 pr-5 text-sm font-bold text-background-dark shadow-md transition-all hover:scale-105" data-filter="all">Tümü</button>
+        <button class="filter-btn flex h-10 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 pl-5 pr-5 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all" data-filter="vitamin">Vitamin ve Mineraller</button>
+        <button class="filter-btn flex h-10 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 pl-5 pr-5 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all" data-filter="protein">Protein Takviyeleri</button>
+        <button class="filter-btn flex h-10 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 pl-5 pr-5 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all" data-filter="amino">Amino Asitler</button>
+    </div>
+</section>
+
+<section>
+    <div id="product-grid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="vitamin">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" data-alt="Multivitamin product image" style='background-image: url('{% static 'ürünler/multivitamin.jpeg' %}');'></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Multivitamin</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Günlük Vitamin ve Mineral Desteği</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/multivitamin.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="protein">
+            <div class="relative w-full aspect-square bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC7YGMKaj7MctUcvSbbBR4pBNOTRSVFiVOTFOkdKP6n7ASE6s0n2IWsvCCjJMartePNr-W0lPRysz2CNfVU7eH67MJ8L35KPngBdu3aq0UFRZobcU3bRBwe2Olmaf3Xi7nluITBQt8Wcrz8TYsNTAZF5BtaLCbwCt2NqhIUxA-tL3Rdwym7JP_5p7wCuF3lG_7WejzDXI9ioKtrijLc-tbZSVnteOyGBH5xsWeU8ujf3rHivE1OtN_AAEdzUvuBUX1hfJ-_ZTC8E-c");'></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Whey Protein Isolate</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Hızlı Kas Onarımı İçin</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/ısolate.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="vitamin">
+            <div class="w-full aspect-square bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAu-7DOAlk_ZuHoXhLv0eVU0U2zYldypnEaSSOQxq17cvfjhtmsQD_ixuiEvFNyqaXaV3IDmDteRqQpubFXPBS0edjtMrzJwrpjxTlgUTUT2UsO9ErTOuixRzz80ZYqkc2JGYsRKGFPltB7y6nn1VgzdWlgjvT1JLoU7QMGoMa6Tfx5tc4i8868TkArNHkiWl9sXB6Jf2U2BmcIvTaHopdUMoWNL0ZkW9-uIPrv2Tlz_s9HKMocbRErSw2B0DAw4OKsAWgWVB1Snc8");'></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Multivitamin Kompleksi</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Günlük Enerji ve Bağışıklık Desteği</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="#">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="amino">
+            <div class="w-full aspect-square bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB2YNCkyCUSbrbdF_dSvvBUvuwklav85dUlhI2mK_cgDIpzVYHCSwwuXJCbl3VKod08bl4YpymdDKfqjZ0dmk95ERkQUXK65biTIEISaEvWNnZxFFxZQiBGiMJev0PAL-oJIb7006sg3mugIBTSd5kZW1us25RcYev6vEeMtcRNWxbqrMg56pgF2q7JRvCSEPe6HpvuhN7LPFuxUmvU2QK5HgEEFpH5c1rnMAGVHStU2niloj6uDGDs1UteonzT4qBSVNcL6QryH9Y");'></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">BCAA 2:1:1</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Kas Yıkımını Önler</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/bcaa.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="amino">
+            <div class="w-full aspect-square bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAA0BSzR3w5PrrkyMJwUC57u_fztxke4uAZ3BhEYZrpFYDTXOYGehtJkyrQvdD7vuSGXwUbUahWy3Gr3Onmv95Xe1jIuwMmhu1z39zypVB7Nn7UW-NTzXVlEqMDChfmc5BZ3OWyDluXr9Q4gXJDsAQQuEB_uGx3TtrPuwtN1uB7Ing8LwhbOSzmfcfbXqT-bcIw1HI1cE_YFZ-I4lqP_YtgTjsVFrjkW3IvkgaIWk8S7GC6zQtwoTxhucjgdV5rm2MZ3g6Sgrkwitk");'></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Kreatin Monohidrat</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Güç ve Performans Artışı</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/kreatin.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="vitamin">
+            <div class="w-full aspect-square bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAz9BasdBjATFmeErGdVt7pmxQ03BV2DLnsO0sDvY65Si7wQKy2ASSvUWV1WGpq0Cum6uUWOLJl9Ktjw_L7u6_-7WMamxQVmOt5vTS50PNQ-10dd0H2HK4_o86XtEz4r2p8pVCTXSM3zDhDsZNQmJ6z-TiGDe6Q8DdLfYGU0U8l8op_KRlyOb5ZJN-ry1pO_bh433OMFxqA45RwxXwmhbFNQ1-adsuGweONILgDpuehV9MOCK4VtlkCcHZLPCqK1n0Pk_pToV5AknU");'></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Omega-3 Balık Yağı</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Kalp ve Beyin Sağlığı</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/omega3.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="vitamin">
+            <div class="w-full aspect-square bg-cover bg-center" style='background-image: url('{% static 'ürünler/c_vitamin.jpg' %}');'></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">C Vitamini 1000mg</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Güçlü Antioksidan Desteği</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/vitamin_c.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="amino">
+            <div class="w-full aspect-square bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuASR4sD3vA8SFhkK3FCAVs0OJoD0Lojqpx76f9FH1WSbTRCbqfB0kvjOul1LX0d-gBrY3f7CIKKUkOEhf8yEAUjUpfUm5shtEiQdn-I6Wd8DgzpRaZHtnNJfH5vdjQeqUaiwZg3NWGHCwJH7a_mmufUkPnlV032NLbCyMKkKk6Fgu5tnHmZRSCR3gl2L15K2s21P7skz1CfrLrKqhox5ZSZP7mgJMr9wtDczlNMZyrhEjRe7_XyNhJ4pgzaaBAruGYc1_EtxHrsJus");'></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Pre-Workout Karışımı</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Antrenman Öncesi Enerji Patlaması</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/pre.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="protein">
+            <div class="w-full aspect-square bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDZCAglYqeJ_DDteEpm3X7pQz3_vGoHU9ubEkk77dtIzrXAgZi7qAz9PwCy1y6CLsYYw46awIk4dd3-5J6PpTeq9-H0e1FAAGdJs4tzJ_rspGLtnWy2PaYpbi69_5PehEiVFaI-KyE3r3lHThYHc9x5ISwwO0dmUta3cwlW6BUiyJFZUI9rWYxxlzno3MbnV1q83DFAUAzkl73f0WrteH1RodX45rmBAMUfLH16vrw50wXMjgx_rsLpTVc9sCuMYyc73UocqascB00");'></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Vegan Protein Tozu</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Bitkisel Bazlı Protein Kaynağı</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/vegan.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="vitamin">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/zma.jpg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">ZMA</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Uyku ve Kas Onarımı</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/zma.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="vitamin">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/magnezyum.jpeg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Magnezyum</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Kas ve Sinir Fonksiyonları</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/magnezyum.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="vitamin">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/zınc.jpeg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Zinc (Çinko)</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Cilt ve Metabolizma Sağlığı</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/zinc.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="vitamin">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/milk_thistle.jpeg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Milk Thistle</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Karaciğer Destekleyici</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/milk.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="protein">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/whey_p_1.jpeg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Whey Protein</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Klasik Peynir Altı Suyu Proteini</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/whey.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="protein">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/protein_bar.jpeg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Protein Bar</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Pratik Atıştırmalık</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/bar.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="protein">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/protein_p_1.jpeg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Protein Puding</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Tatlı İhtiyacına Sağlıklı Çözüm</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/pudding.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="protein">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/protein_e_1.jpeg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">ProEspresso</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Proteinli Kahve Keyfi</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/espresso.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="protein">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/caseın_protein.jpeg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Casein Protein</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Gece Boyu Yavaş Sindirim</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/casein.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="amino">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/l_carnitine.jpg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">L-Carnitine</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Termojenik Yağ Yakıcı</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/l_carnitine.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="amino">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/L_glutamine.jpg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">L-Glutamine</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Hızlı Toparlanma</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/glutamine.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="protein">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/gainer.jpg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Mass Gainer</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Hacim ve Kilo Aldırıcı</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/gainer.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="protein">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/collagen.jpg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Collagen Peptides</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Eklem ve Cilt Sağlığı</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/collagen.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+        <div class="group product-card flex flex-col overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark shadow-md transition-all hover:shadow-xl hover:-translate-y-1" data-category="vitamin">
+            <div class="relative w-full aspect-square bg-cover bg-center bg-gray-200 dark:bg-gray-800" style="background-image: url('{% static 'ürünler/glucosamine.jpg' %}');"></div>
+            <div class="flex flex-1 flex-col p-5">
+                <h4 class="text-lg font-bold text-text-light dark:text-text-dark product-title">Glucosamine Complex</h4>
+                <p class="mt-1 text-sm text-subtle-text-light dark:text-subtle-text-dark product-desc">Eklem Ağrılarına Destek</p>
+                <a class="mt-4 text-sm font-bold text-primary group-hover:underline" href="{% static 'ürünler.page/glucosamine.html' %}">Detayları İncele →</a>
+            </div>
+        </div>
+
+    </div>
+    
+    <div id="no-products-msg" class="hidden text-center py-10">
+        <span class="material-symbols-outlined text-6xl text-gray-300 dark:text-gray-700 mb-4">search_off</span>
+        <h4 class="text-xl font-bold text-text-light dark:text-text-dark">Aradığınız ürün bulunamadı.</h4>
+        <p class="text-subtle-text-light dark:text-subtle-text-dark mt-2">Lütfen farklı bir arama terimi deneyin.</p>
+    </div>
+</section>
+</div>
+</main>
+
+<footer class="border-t border-text-light/10 dark:border-text-dark/10 py-12">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">exercise</span>
+                    <span class="font-bold text-xl">FORMLAB</span>
+                </div>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-sm">Sağlıklı beslenme, bir varış noktası değil, bir yolculuktur.</p>
+                <p class="text-text-muted-light dark:text-text-muted-dark text-xs">© 2025 FORMLAB. Tüm Hakları Saklıdır (WEB PROJESİ).</p>
+            </div>
+  </footer>
+</div>
+
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+        html.classList.add('dark');
+        html.classList.remove('light');
+        themeIcon.innerText = 'light_mode';
+    }
+
+    themeToggle.addEventListener('click', () => {
+        if (html.classList.contains('light')) {
+            html.classList.remove('light');
+            html.classList.add('dark');
+            themeIcon.innerText = 'light_mode';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.remove('dark');
+            html.classList.add('light');
+            themeIcon.innerText = 'dark_mode';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // --- ARAMA ve FİLTRELEME DEĞİŞKENLERİ ---
+    const searchInput = document.getElementById('hero-search');
+    const searchButton = document.getElementById('search-button');
+    const searchSuggestions = document.getElementById('search-suggestions');
+    const productCards = document.querySelectorAll('.product-card');
+    const noProductsMsg = document.getElementById('no-products-msg');
+    const productGrid = document.getElementById('product-grid');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    // --- KATEGORİ FİLTRELEME İŞLEVİ ---
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Aktif buton stilini değiştir
+            filterBtns.forEach(b => {
+                b.classList.remove('bg-primary', 'text-background-dark', 'font-bold', 'scale-105');
+                b.classList.add('bg-surface-light', 'dark:bg-surface-dark', 'text-text-light', 'dark:text-text-dark', 'font-medium');
+            });
+            btn.classList.remove('bg-surface-light', 'dark:bg-surface-dark', 'text-text-light', 'dark:text-text-dark', 'font-medium');
+            btn.classList.add('bg-primary', 'text-background-dark', 'font-bold', 'scale-105');
+
+            const filterValue = btn.getAttribute('data-filter');
+            
+            // Ürünleri filtrele
+            let hasVisibleProduct = false;
+            productCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                if (filterValue === 'all' || category === filterValue) {
+                    card.classList.remove('hidden');
+                    hasVisibleProduct = true;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Arama kutusunu temizle (Kategori seçilince arama sıfırlanmalı ki karışıklık olmasın)
+            searchInput.value = '';
+            
+            // Eğer kategori boşsa mesaj göster (Normalde olmaz ama güvenlik için)
+            if (!hasVisibleProduct) {
+                noProductsMsg.classList.remove('hidden');
+                productGrid.classList.add('hidden');
+            } else {
+                noProductsMsg.classList.add('hidden');
+                productGrid.classList.remove('hidden');
+            }
+        });
+    });
+
+    // --- AUTOCOMPLETE DATA ---
+    const products = [
+        { name: "Multivitamin", url: "ürünler.page/multivitamin.html", desc: "Günlük Vitamin ve Mineral Desteği" },
+        { name: "Whey Protein Isolate", url: "ürünler.page/ısolate.html", desc: "Hızlı Kas Onarımı İçin" },
+        { name: "Multivitamin Kompleksi", url: "#", desc: "Günlük Enerji ve Bağışıklık Desteği" },
+        { name: "BCAA 2:1:1", url: "ürünler.page/bcaa.html", desc: "Kas Yıkımını Önler" },
+        { name: "Kreatin Monohidrat", url: "ürünler.page/kreatin.html", desc: "Güç ve Performans Artışı" },
+        { name: "Omega-3 Balık Yağı", url: "ürünler.page/omega3.html", desc: "Kalp ve Beyin Sağlığı" },
+        { name: "C Vitamini 1000mg", url: "ürünler.page/vitamin_c.html", desc: "Güçlü Antioksidan Desteği" },
+        { name: "Pre-Workout Karışımı", url: "ürünler.page/pre.html", desc: "Antrenman Öncesi Enerji Patlaması" },
+        { name: "Vegan Protein Tozu", url: "ürünler.page/vegan.html", desc: "Bitkisel Bazlı Protein Kaynağı" },
+        { name: "ZMA", url: "ürünler.page/zma.html", desc: "Uyku ve Kas Onarımı" },
+        { name: "Magnezyum", url: "ürünler.page/magnezyum.html", desc: "Kas ve Sinir Fonksiyonları" },
+        { name: "Zinc (Çinko)", url: "ürünler.page/zinc.html", desc: "Cilt ve Metabolizma Sağlığı" },
+        { name: "Milk Thistle", url: "ürünler.page/milk.html", desc: "Karaciğer Destekleyici" },
+        { name: "Whey Protein", url: "ürünler.page/whey.html", desc: "Klasik Peynir Altı Suyu Proteini" },
+        { name: "Protein Bar", url: "ürünler.page/bar.html", desc: "Pratik Atıştırmalık" },
+        { name: "Protein Puding", url: "ürünler.page/pudding.html", desc: "Tatlı İhtiyacına Sağlıklı Çözüm" },
+        { name: "ProEspresso", url: "ürünler.page/espresso.html", desc: "Proteinli Kahve Keyfi" },
+        { name: "Casein Protein", url: "ürünler.page/casein.html", desc: "Gece Boyu Yavaş Sindirim" },
+        { name: "L-Carnitine", url: "ürünler.page/l_carnitine.html", desc: "Termojenik Yağ Yakıcı" },
+        { name: "L-Glutamine", url: "ürünler.page/glutamine.html", desc: "Hızlı Toparlanma" },
+        { name: "Mass Gainer", url: "ürünler.page/gainer.html", desc: "Hacim ve Kilo Aldırıcı" },
+        { name: "Collagen Peptides", url: "ürünler.page/collagen.html", desc: "Eklem ve Cilt Sağlığı" },
+        { name: "Glucosamine Complex", url: "ürünler.page/glucosamine.html", desc: "Eklem Ağrılarına Destek" }
+    ];
+
+    function updateSuggestions(query) {
+        searchSuggestions.innerHTML = '';
+        if (!query) {
+            searchSuggestions.classList.add('hidden');
+            return;
+        }
+        const filtered = products.filter(product => 
+            product.name.toLowerCase().includes(query) || 
+            product.desc.toLowerCase().includes(query)
+        );
+        if (filtered.length > 0) {
+            searchSuggestions.classList.remove('hidden');
+            filtered.forEach(product => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <a href="${product.url}" class="block px-4 py-3 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-gray-800 last:border-none">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary text-xl">shopping_bag</span>
+                            <div>
+                                <p class="text-sm font-bold text-text-light dark:text-text-dark">${product.name}</p>
+                                <p class="text-xs text-subtle-text-light dark:text-subtle-text-dark">${product.desc}</p>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                searchSuggestions.appendChild(li);
+            });
+        } else {
+            searchSuggestions.classList.add('hidden');
+        }
+    }
+
+    // Grid filtreleme (Arama için)
+    function filterGrid(query) {
+        // Arama yaparken kategori filtrelerini sıfırla (Tümü seçili yap)
+        filterBtns.forEach(b => {
+             b.classList.remove('bg-primary', 'text-background-dark', 'font-bold', 'scale-105');
+             b.classList.add('bg-surface-light', 'dark:bg-surface-dark', 'text-text-light', 'dark:text-text-dark', 'font-medium');
+        });
+        filterBtns[0].classList.remove('bg-surface-light', 'dark:bg-surface-dark', 'text-text-light', 'dark:text-text-dark', 'font-medium');
+        filterBtns[0].classList.add('bg-primary', 'text-background-dark', 'font-bold', 'scale-105');
+
+        let hasVisibleProduct = false;
+        productCards.forEach(card => {
+            const title = card.querySelector('.product-title').textContent.toLowerCase();
+            const desc = card.querySelector('.product-desc').textContent.toLowerCase();
+
+            if (title.includes(query) || desc.includes(query)) {
+                card.classList.remove('hidden');
+                hasVisibleProduct = true;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+
+        if (!hasVisibleProduct && query !== '') {
+            noProductsMsg.classList.remove('hidden');
+            productGrid.classList.add('hidden');
+        } else {
+            noProductsMsg.classList.add('hidden');
+            productGrid.classList.remove('hidden');
+        }
+    }
+
+    // Event Listeners
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        updateSuggestions(query);
+        filterGrid(query);
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+            searchSuggestions.classList.add('hidden');
+        }
+    });
+
+    searchButton.addEventListener('click', () => {
+        const query = searchInput.value.toLowerCase().trim();
+        filterGrid(query);
+    });
+
+</script>
+</body></html>
+
+
