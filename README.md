@@ -50,10 +50,11 @@ source venv/bin/activate
 ```
 
 ### 3. Gerekli Kütüphaneleri Yükleyin
-Sanal ortam aktifken Django'yu yükleyin:
+Sanal ortam aktifken gerekli kütüphaneleri yükleyin:
 ```bash
-pip install django
+pip install -r requirements.txt
 ```
+
 
 ### 4. Sunucuyu Başlatın
 ```bash
