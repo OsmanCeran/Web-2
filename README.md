@@ -1,13 +1,16 @@
 # FORMLAB - Sağlık & Fitness Platformu (Django) 🚀
 
-FORMLAB, kullanıcıların sağlıklı beslenme, egzersiz planlama, akıllı mutfak rehberliği ve çeşitli fitness hesaplayıcılarına ulaşabildiği modern, duyarlı (responsive) ve dinamik bir **Django Web Uygulamasıdır**. 
-
-Proje, statik HTML yapısından tamamen modern bir **Django (Python)** mimarisine dönüştürülmüştür.
-
 ---
 
-## 🌟 Öne Çıkan Özellikler
+## 🎯 Projenin Amacı
 
+**FORMLAB**, kullanıcıların sağlıklı beslenme, egzersiz planlama, akıllı mutfak rehberliği ve çeşitli fitness hesaplayıcılarına kolayca ulaşabildiği modern, duyarlı (responsive) ve dinamik bir **Django Web Uygulamasıdır**. 
+
+Bu projenin temel amacı:
+* Statik HTML tabanlı web tasarımlarını modern ve ölçeklenebilir bir **Django (Python)** backend mimarisine dönüştürmek.
+* Kullanıcıların günlük fitness ve beslenme ihtiyaçlarını takip edebilmeleri için hepsi bir arada pratik bir sağlık portalı sunmak.
+
+### 🌟 Öne Çıkan Özellikler
 * **🏠 Dinamik Anasayfa:** Günün vitamini bilgi kartı, modern arayüz ve hızlı yönlendirmeler.
 * **🏋️ Egzersiz Kütüphanesi:** Kategorilere ayrılmış görsel destekli hareket anlatımları ve detay sayfaları.
 * **🥗 Akıllı Mutfak & Sağlıklı Beslenme:** Sağlıklı tarifler, beslenme rehberleri ve kalori/makro odaklı mutfak tavsiyeleri.
@@ -15,10 +18,7 @@ Proje, statik HTML yapısından tamamen modern bir **Django (Python)** mimarisin
 * **🧮 Gelişmiş Hesaplayıcılar:** Vücut Kitle İndeksi (VKI), BMR, TDEE, Makro İhtiyacı ve İdeal Kilo hesaplama araçları.
 * **🌓 Gece/Gündüz Modu:** Göz yormayan, modern ve şık karanlık mod desteği.
 
----
-
-## 🛠️ Kullanılan Teknolojiler
-
+### 🛠️ Kullanılan Teknolojiler
 * **Backend:** Python, Django 5+
 * **Frontend:** TailwindCSS, HTML5, JavaScript (ES6), Google Material Icons & Fonts
 * **Veritabanı:** SQLite (Varsayılan)
@@ -27,19 +27,18 @@ Proje, statik HTML yapısından tamamen modern bir **Django (Python)** mimarisin
 
 ## 💻 Kurulum ve Çalıştırma
 
-Projeyi yerel bilgisayarınızda çalıştırmak için aşağıdaki adımları takip edin:
+Projeyi yerel bilgisayarınızda çalıştırmak için aşağıdaki adımları sırasıyla takip edebilirsiniz:
 
 ### 1. Projeyi Klonlayın veya İndirin
 ```bash
-git clone <github-repository-url>
+git clone https://github.com/OsmanCeran/Web-2.git
 cd fromlab
 ```
 
 ### 2. Sanal Ortam (Virtual Environment) Oluşturun ve Aktif Edin
-**Windows:**
-```bash
+**Windows (PowerShell):**
+```powershell
 python -m venv venv
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process # (PowerShell için gerekirse)
 .\venv\Scripts\Activate.ps1
 ```
 
@@ -50,11 +49,10 @@ source venv/bin/activate
 ```
 
 ### 3. Gerekli Kütüphaneleri Yükleyin
-Sanal ortam aktifken gerekli kütüphaneleri yükleyin:
+Sanal ortam aktifken bağımlılıkları yükleyin:
 ```bash
 pip install -r requirements.txt
 ```
-
 
 ### 4. Sunucuyu Başlatın
 ```bash
@@ -65,28 +63,9 @@ Web tarayıcınızdan **`http://127.0.0.1:8000/`** adresine giderek uygulamayı 
 
 ---
 
-## 📂 Proje Yapısı
+## 👥 Projeyi Yapanlar
 
-```text
-fromlab/
-│
-├── config/                  # Django Proje Ayarları (Settings, URLs, WSGI)
-│   ├── settings.py
-│   └── urls.py
-│
-├── core/                    # Django Uygulaması (App)
-│   ├── templates/           # HTML Şablonları (Django Template Engine)
-│   ├── static/              # Görseller, Videolar ve Stil Dosyaları
-│   ├── views.py             # Sayfa Yönlendirme Mantığı
-│   └── urls.py              # Uygulama URL Yönlendirmeleri
-│
-├── venv/                    # Python Sanal Ortam Dosyaları (Git'e eklenmez)
-├── .gitignore               # Git Dışı Bırakılacak Dosyalar
-├── README.md                # Proje Açıklama Dosyası
-└── manage.py                # Django Yönetim Scripti
-```
+Bu proje aşağıdaki ekip üyeleri tarafından geliştirilmiştir:
 
----
-
-## 📄 Lisans
-Bu proje eğitim ve geliştirme amaçlı hazırlanmış bir WEB PROJESİDİR. Tüm hakları saklıdır © 2025.
+* **Osman Ceran** - `2024481004`
+* **Eymen Zeycan İşleksoy** - `2024481050`
