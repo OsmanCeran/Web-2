@@ -1,3 +1,11 @@
+## 👥 Projeyi Yapanlar
+
+Bu proje aşağıdaki ekip üyeleri tarafından geliştirilmiştir:
+
+* **Osman Ceran** - `2024481004`
+* **Eymen Zeycan İşleksoy** - `2024481050`
+
+
 # FORMLAB - Sağlık & Fitness Platformu (Django) 🚀
 
 ---
@@ -63,9 +71,4 @@ Web tarayıcınızdan **`http://127.0.0.1:8000/`** adresine giderek uygulamayı 
 
 ---
 
-## 👥 Projeyi Yapanlar
 
-Bu proje aşağıdaki ekip üyeleri tarafından geliştirilmiştir:
-
-* **Osman Ceran** - `2024481004`
-* **Eymen Zeycan İşleksoy** - `2024481050`
